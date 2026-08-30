@@ -41,7 +41,8 @@ const categoryColors: Record<string, string> = {
 };
 
 export default function Sidebar() {
-  const pathname = usePathname();
+  const rawPathname = usePathname();
+  const pathname = rawPathname.replace(/\/$/, "") || "/";
 
   return (
     <aside className="w-60 shrink-0 hidden md:flex flex-col border-r bg-sidebar sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto">
