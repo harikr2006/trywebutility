@@ -6,7 +6,8 @@ import { generatePalettes } from "@/lib/tools/color-palette";
 
 export default function ColorPalettePage() {
   const [base, setBase] = useState("#6366f1");
-  const palettes = generatePalettes(base);
+  const isValidHex = /^#[0-9a-fA-F]{3}$|^#[0-9a-fA-F]{6}$/.test(base);
+  const palettes = isValidHex ? generatePalettes(base) : [];
 
   return (
     <ToolShell title="Color Palette Generator" description="Generate harmonious color palettes from a base color — complementary, triadic, analogous, and more.">
@@ -16,7 +17,8 @@ export default function ColorPalettePage() {
           <input type="color" value={base} onChange={(e) => setBase(e.target.value)}
             className="h-10 w-16 rounded-md border border-border/60 cursor-pointer p-0.5 bg-transparent" />
           <input type="text" value={base} onChange={(e) => setBase(e.target.value)} maxLength={7}
-            className="w-28 h-10 rounded-md border border-border/60 bg-background px-3 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+            className={`w-28 h-10 rounded-md border bg-background px-3 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 ${!isValidHex ? "border-destructive text-destructive" : "border-border/60"}`} />
+          {!isValidHex && <span className="text-xs text-destructive">Invalid hex</span>}
         </div>
 
         <div className="space-y-4">

@@ -13,12 +13,12 @@ export default function ColorConverterPage() {
     try {
       return parseColor(inputValue.trim());
     } catch (e: unknown) {
-      return { error: e instanceof Error ? e.message : String(e) };
+      return { result: null, error: e instanceof Error ? e.message : String(e) };
     }
   }, [inputValue]);
 
-  const hasError = result && "error" in result;
-  const hasResult = result && !hasError;
+  const hasError = result && !!result.error;
+  const hasResult = result && !!result.result;
 
   return (
     <ToolShell
@@ -42,12 +42,12 @@ export default function ColorConverterPage() {
         {hasError && (
           <div className="flex gap-2 rounded-lg border border-destructive/40 bg-destructive/8 p-3 text-sm text-destructive font-mono">
             <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
-            <span>{(result as { error: string }).error}</span>
+            <span>{result!.error}</span>
           </div>
         )}
 
         {hasResult && (() => {
-          const r = result as { hex: string; rgb: string; hsl: string };
+          const r = result!.result!;
           return (
             <div className="flex flex-col gap-4">
               <div

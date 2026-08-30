@@ -72,7 +72,7 @@ export default function JsonToTsPage() {
           <Textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder='Paste JSON hereâ€¦ e.g. {"name": "Alice", "age": 30}'
+            placeholder='Paste JSON here… e.g. {"name": "Alice", "age": 30}'
             className="font-mono text-[13px] min-h-72 resize-y bg-muted/30 border-border/60 focus-visible:ring-primary/30"
           />
         </div>
@@ -86,7 +86,7 @@ export default function JsonToTsPage() {
           <Textarea
             value={output}
             readOnly
-            placeholder="Generated TypeScript interfaces will appear hereâ€¦"
+            placeholder="Generated TypeScript interfaces will appear here…"
             className="font-mono text-[13px] min-h-72 resize-y bg-muted/30 border-border/60 focus-visible:ring-primary/30"
           />
         </div>

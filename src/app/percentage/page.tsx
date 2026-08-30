@@ -87,8 +87,8 @@ export default function PercentagePage() {
 
   const results = [
     fmt(r1.result),
-    fmt(r2.result) + "%",
-    (r3.result >= 0 ? "+" : "") + fmt(r3.result) + "%",
+    r2.formula === "Division by zero" ? "—" : fmt(r2.result) + "%",
+    r3.formula === "Cannot calculate change from 0" ? "—" : (r3.result >= 0 ? "+" : "") + fmt(r3.result) + "%",
     fmt(r4.result),
     fmt(r5.result),
   ];

@@ -17,8 +17,9 @@ export function findReplace(
     let output: string;
     if (useRegex) {
       const flags = caseSensitive ? "g" : "gi";
-      const re = new RegExp(find, flags);
-      output = input.replace(re, (match) => { count++; return replace.replace(/\$&/g, match); });
+      const allMatches = input.match(new RegExp(find, flags));
+      count = allMatches ? allMatches.length : 0;
+      output = input.replace(new RegExp(find, flags), replace);
     } else {
       const escaped = find.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
       const flags = caseSensitive ? "g" : "gi";

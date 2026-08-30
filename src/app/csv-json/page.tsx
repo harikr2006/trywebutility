@@ -27,13 +27,13 @@ export default function CsvJsonPage() {
   }
 
   return (
-    <ToolShell title="CSV â†” JSON Converter" description="Convert between CSV and JSON formats.">
+    <ToolShell title="CSV ↔ JSON Converter" description="Convert between CSV and JSON formats.">
       <div className="flex flex-wrap items-center gap-2 mb-4">
         <Button size="sm" className="h-8" onClick={() => convert("csv-to-json")}>
-          CSV â†’ JSON
+          CSV → JSON
         </Button>
         <Button size="sm" className="h-8" onClick={() => convert("json-to-csv")}>
-          JSON â†’ CSV
+          JSON → CSV
         </Button>
         <Button size="sm" className="h-8" variant="ghost" onClick={clear}>
           Clear

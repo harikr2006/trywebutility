@@ -67,7 +67,7 @@ export default function LoremIpsumPage() {
                   size="sm"
                   className="h-8"
                   variant={type === value ? "default" : "outline"}
-                  onClick={() => setType(value)}
+                  onClick={() => { setType(value); generate(value, count, startWithLorem); }}
                 >
                   {label}
                 </Button>
@@ -106,7 +106,7 @@ export default function LoremIpsumPage() {
           <input
             type="checkbox"
             checked={startWithLorem}
-            onChange={(e) => setStartWithLorem(e.target.checked)}
+            onChange={(e) => { setStartWithLorem(e.target.checked); generate(type, count, e.target.checked); }}
             className="accent-primary h-3.5 w-3.5"
           />
           <span>Start with &ldquo;Lorem ipsum...&rdquo;</span>

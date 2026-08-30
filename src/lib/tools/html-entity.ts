@@ -1,12 +1,10 @@
-// Named entity map: character -> entity name
+﻿// Named entity map: character -> entity name
 const CHAR_TO_ENTITY: Record<string, string> = {
   "&": "&amp;",
   "<": "&lt;",
   ">": "&gt;",
   '"': "&quot;",
   "'": "&apos;",
-  "/": "&#x2F;",
-  " ": "&nbsp;",
   "©": "&copy;",
   "®": "&reg;",
   "™": "&trade;",

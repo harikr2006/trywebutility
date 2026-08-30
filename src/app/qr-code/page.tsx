@@ -70,7 +70,7 @@ export default function QRCodePage() {
                   size="sm"
                   className="h-8"
                   variant={size === s ? "default" : "outline"}
-                  onClick={() => setSize(s)}
+                  onClick={() => { setSize(s); handleGenerate(input, s); }}
                 >
                   {s}px
                 </Button>

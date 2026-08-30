@@ -1,6 +1,6 @@
 export type SortMode = "alpha-asc" | "alpha-desc" | "length-asc" | "length-desc" | "shuffle" | "reverse";
 
-export function sortLines(input: string, mode: SortMode, dedupe: boolean): string {
+export function sortLines(input: string, mode: SortMode, dedupe: boolean, _seed?: number): string {
   if (!input.trim()) return "";
   let lines = input.split("\n");
   if (dedupe) {

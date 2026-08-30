@@ -5,7 +5,10 @@ import CopyButton from "@/components/shared/CopyButton";
 import { calcAge, diffDates, addDuration } from "@/lib/tools/date-calculator";
 import { AlertCircle } from "lucide-react";
 
-const today = new Date().toISOString().split("T")[0];
+function localDate(d: Date = new Date()) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+const today = localDate();
 
 export default function DateCalculatorPage() {
   const [birthdate, setBirthdate] = useState("1995-06-15");

@@ -9,6 +9,7 @@ export function calcAge(birthdate: string): AgeDuration & { error: string | null
   try {
     const birth = new Date(birthdate);
     if (isNaN(birth.getTime())) throw new Error("Invalid date");
+    if (birth > new Date()) throw new Error("Birthdate cannot be in the future");
     const now = new Date();
     let years = now.getFullYear() - birth.getFullYear();
     let months = now.getMonth() - birth.getMonth();
@@ -51,7 +52,8 @@ export function addDuration(date: string, amount: number, unit: "days" | "weeks"
     else if (unit === "weeks") r.setDate(r.getDate() + amount * 7);
     else if (unit === "months") r.setMonth(r.getMonth() + amount);
     else r.setFullYear(r.getFullYear() + amount);
-    return { result: r.toISOString().split("T")[0], error: null };
+    const localDateStr = `${r.getFullYear()}-${String(r.getMonth() + 1).padStart(2, "0")}-${String(r.getDate()).padStart(2, "0")}`;
+    return { result: localDateStr, error: null };
   } catch (e) {
     return { result: "", error: e instanceof Error ? e.message : "Error" };
   }

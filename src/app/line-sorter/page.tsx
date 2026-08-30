@@ -19,7 +19,9 @@ export default function LineSorterPage() {
   const [input, setInput] = useState("banana\napple\ncherry\ndate\napple");
   const [mode, setMode] = useState<SortMode>("alpha-asc");
   const [dedupe, setDedupe] = useState(false);
-  const output = sortLines(input, mode, dedupe);
+  const [shuffleKey, setShuffleKey] = useState(0);
+  // shuffleKey increment forces re-render so sortLines re-runs with new Math.random()
+  const output = sortLines(input, mode, dedupe, shuffleKey);
   const lineCount = input.split("\n").filter(Boolean).length;
   const outCount = output.split("\n").filter(Boolean).length;
 
@@ -29,7 +31,7 @@ export default function LineSorterPage() {
         <div className="flex flex-wrap gap-2 items-center">
           {MODES.map((m) => (
             <Button key={m.value} size="sm" variant={mode === m.value ? "default" : "outline"}
-              onClick={() => setMode(m.value)}>{m.label}</Button>
+              onClick={() => { if (m.value === "shuffle" && mode === "shuffle") { setShuffleKey(k => k + 1); } else { setMode(m.value); } }}>{m.label}</Button>
           ))}
           <label className="flex items-center gap-1.5 text-sm cursor-pointer ml-2">
             <input type="checkbox" checked={dedupe} onChange={(e) => setDedupe(e.target.checked)}

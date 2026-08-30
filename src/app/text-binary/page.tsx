@@ -29,7 +29,7 @@ export default function TextBinaryPage() {
   }
 
   return (
-    <ToolShell title="Text ↔ Binary" description="Convert text to binary (0s and 1s) and back. Each character is 8 bits.">
+    <ToolShell title="Text ↔ Binary" description="Convert text to binary (0s and 1s) and back. Uses UTF-8 encoding — multi-byte characters produce multiple 8-bit groups.">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-4">
           <h3 className="text-sm font-semibold">Text → Binary</h3>

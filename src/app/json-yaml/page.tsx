@@ -33,13 +33,13 @@ export default function JsonYamlPage() {
   }
 
   return (
-    <ToolShell title="JSON â†” YAML Converter" description="Convert between JSON and YAML formats.">
+    <ToolShell title="JSON ↔ YAML Converter" description="Convert between JSON → YAML formats.">
       <div className="flex flex-wrap items-center gap-2 mb-4">
         <Button size="sm" className="h-8" onClick={() => convert("json-to-yaml")}>
-          JSON â†’ YAML
+          JSON → YAML
         </Button>
         <Button size="sm" className="h-8" onClick={() => convert("yaml-to-json")}>
-          YAML â†’ JSON
+          YAML → JSON
         </Button>
         <Button
           size="sm"
@@ -72,7 +72,7 @@ export default function JsonYamlPage() {
           <Textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Paste JSON or YAML hereâ€¦"
+            placeholder="Paste JSON → YAML hereâ€¦"
             className="font-mono text-[13px] min-h-72 resize-y bg-muted/30 border-border/60 focus-visible:ring-primary/30"
           />
         </div>
@@ -86,7 +86,7 @@ export default function JsonYamlPage() {
           <Textarea
             value={output}
             readOnly
-            placeholder="Result will appear hereâ€¦"
+            placeholder="Result will appear here…"
             className="font-mono text-[13px] min-h-72 resize-y bg-muted/30 border-border/60 focus-visible:ring-primary/30"
           />
         </div>

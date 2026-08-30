@@ -62,7 +62,13 @@ export default function JSONFormatterPage() {
               size="sm"
               variant={indent === n ? "default" : "outline"}
               className="h-7 w-7 p-0 text-xs"
-              onClick={() => setIndent(n)}
+              onClick={() => {
+                setIndent(n);
+                if (input) {
+                  const { output: out, error: err } = formatJSON(input, n);
+                  setOutput(out); setError(err); setValid(err ? false : true);
+                }
+              }}
             >
               {n}
             </Button>

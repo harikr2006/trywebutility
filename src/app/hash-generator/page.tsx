@@ -34,6 +34,7 @@ export default function HashGeneratorPage() {
   async function handleGenerate() {
     if (!input.trim()) {
       setError("Please enter some text to hash.");
+      setResults({});
       return;
     }
     setError(null);

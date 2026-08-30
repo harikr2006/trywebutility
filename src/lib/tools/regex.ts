@@ -35,15 +35,19 @@ export function testRegex(pattern: string, flags: string, testString: string): R
   }
 }
 
+function escapeHtml(s: string): string {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
 export function highlightMatches(text: string, matches: RegexMatch[]): string {
-  if (!matches.length) return text;
+  if (!matches.length) return escapeHtml(text);
   let result = "";
   let cursor = 0;
   for (const m of matches) {
-    result += text.slice(cursor, m.index);
-    result += `<mark>${m.match}</mark>`;
+    result += escapeHtml(text.slice(cursor, m.index));
+    result += `<mark>${escapeHtml(m.match)}</mark>`;
     cursor = m.index + m.match.length;
   }
-  result += text.slice(cursor);
+  result += escapeHtml(text.slice(cursor));
   return result;
 }

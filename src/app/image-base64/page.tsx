@@ -14,6 +14,10 @@ export default function ImageBase64Page() {
   const fileRef = useRef<HTMLInputElement>(null);
 
   async function handleFile(file: File) {
+    if (file.size > 5 * 1024 * 1024) {
+      setError("File too large. Maximum size is 5 MB.");
+      return;
+    }
     const { dataUrl: url, mimeType: mime, sizeKB: kb, error: err } = await fileToBase64(file);
     if (err) { setError(err); return; }
     setError("");
@@ -44,7 +48,7 @@ export default function ImageBase64Page() {
             type="file"
             accept="image/*"
             className="hidden"
-            onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); }}
+            onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); e.target.value = ""; }}
           />
         </div>
 

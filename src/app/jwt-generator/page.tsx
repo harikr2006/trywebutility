@@ -9,7 +9,7 @@ import { generateJWT } from "@/lib/tools/jwt-generator";
 
 type Algorithm = "HS256" | "HS384" | "HS512";
 
-const DEFAULT_PAYLOAD = '{\n  "sub": "1234567890",\n  "name": "John Doe",\n  "iat": 1516239022\n}';
+const DEFAULT_PAYLOAD = () => `{\n  "sub": "1234567890",\n  "name": "John Doe",\n  "iat": ${Math.floor(Date.now() / 1000)}\n}`;
 
 export default function JWTGeneratorPage() {
   const [payloadStr, setPayloadStr] = useState(DEFAULT_PAYLOAD);
@@ -60,6 +60,9 @@ export default function JWTGeneratorPage() {
             placeholder="your-256-bit-secret"
             className="flex-1 h-8 rounded-md border border-border/60 bg-background px-3 text-sm font-mono focus:outline-none focus:ring-1 focus:ring-primary/30"
           />
+          {!secret.trim() && (
+            <span className="text-xs text-amber-600 dark:text-amber-400 shrink-0">⚠ Empty secret is insecure</span>
+          )}
           <select
             value={algorithm}
             onChange={(e) => setAlgorithm(e.target.value as Algorithm)}

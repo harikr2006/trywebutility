@@ -26,6 +26,7 @@ export default function CronTesterPage() {
   const [expression, setExpression] = useState("*/5 * * * *");
   const [result, setResult] = useState<null | { valid: boolean; human: string; nextRuns: Date[] }>(null);
   const [error, setError] = useState<string | null>(null);
+  const [tick, setTick] = useState(0);
 
   useEffect(() => {
     if (!expression.trim()) {
@@ -48,7 +49,7 @@ export default function CronTesterPage() {
       setResult(null);
       setError(e instanceof Error ? e.message : "Invalid cron expression.");
     }
-  }, [expression]);
+  }, [expression, tick]);
 
   return (
     <ToolShell title="Cron Expression Tester" description="Validate cron expressions, view a human-readable description, and preview the next 10 scheduled run times.">
@@ -62,7 +63,7 @@ export default function CronTesterPage() {
             placeholder="*/5 * * * *"
             className="flex-1 h-9 font-mono rounded-lg border border-border/60 bg-muted/30 px-3 text-sm focus:ring-2 focus:ring-primary/30 focus:outline-none"
           />
-          <Button size="sm" className="h-9" onClick={() => setExpression(expression)}>
+          <Button size="sm" className="h-9" onClick={() => setTick(t => t + 1)}>
             Test
           </Button>
           <Button size="sm" variant="outline" className="h-9" onClick={() => { setExpression(""); setResult(null); setError(null); }}>

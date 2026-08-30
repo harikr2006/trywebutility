@@ -39,7 +39,7 @@ export default function TextCasePage() {
   );
 
   return (
-    <ToolShell title="Text Case Converter" description="Transform your text into any case style â€” camelCase, PascalCase, snake_case, kebab-case, and more.">
+    <ToolShell title="Text Case Converter" description="Transform your text into any case style — camelCase, PascalCase, snake_case, kebab-case, and more.">
       <div className="space-y-5">
         {/* Input */}
         <div className="space-y-1.5">
@@ -63,7 +63,7 @@ export default function TextCasePage() {
                 <CopyButton text={value} />
               </div>
               <p className="font-mono text-sm break-all text-foreground min-h-[1.25rem]">
-                {value || <span className="text-muted-foreground/50 italic">â€”</span>}
+                {value || <span className="text-muted-foreground/50 italic">—</span>}
               </p>
             </div>
           ))}
