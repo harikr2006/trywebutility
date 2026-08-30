@@ -33,11 +33,11 @@ const iconMap: Record<string, LucideIcon> = {
 };
 
 const categoryColors: Record<string, string> = {
-  "Formatters & Validators": "text-emerald-600 dark:text-emerald-400",
-  "Encoders & Decoders": "text-blue-600 dark:text-blue-400",
-  "Converters": "text-orange-600 dark:text-orange-400",
-  "Generators": "text-pink-600 dark:text-pink-400",
-  "Testers & Analysis": "text-violet-600 dark:text-violet-400",
+  "Formatters & Validators": "text-emerald-700 dark:text-emerald-400",
+  "Encoders & Decoders": "text-blue-700 dark:text-blue-400",
+  "Converters": "text-orange-700 dark:text-orange-400",
+  "Generators": "text-pink-700 dark:text-pink-400",
+  "Testers & Analysis": "text-violet-700 dark:text-violet-400",
 };
 
 export default function Sidebar() {

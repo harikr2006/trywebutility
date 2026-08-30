@@ -91,6 +91,7 @@ export default function Header() {
               ref={inputRef}
               id="header-search"
               type="search"
+              role="combobox"
               autoComplete="off"
               value={query}
               onChange={(e) => { setQuery(e.target.value); setOpen(true); }}
@@ -99,7 +100,7 @@ export default function Header() {
               className="w-full h-9 rounded-lg border border-border/70 bg-muted/50 pl-9 pr-9 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/60 focus:bg-background transition-all"
               aria-autocomplete="list"
               aria-expanded={open && results.length > 0}
-              aria-owns={open && results.length > 0 ? "search-dropdown" : undefined}
+              aria-controls={open && results.length > 0 ? "search-dropdown" : undefined}
               aria-haspopup="listbox"
             />
             {query.length === 0 && (
