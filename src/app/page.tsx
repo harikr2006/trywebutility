@@ -14,9 +14,10 @@ import {
   FileJson2, CalendarDays, Ruler, Link2, TableProperties, Tags, Eye, Calculator,
   FileCheck2, Unlink, FileSpreadsheet, Wand2, Frame, PaintBucket, Share2,
   GitCompare, ShieldAlert, GraduationCap, Grid3x3,
-  ArrowRight, LucideIcon,
+  ArrowRight, Star, LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useFavorites } from "@/hooks/useFavorites";
 
 const iconMap: Record<string, LucideIcon> = {
   Braces, Code2, Binary, Link: LinkIcon, KeyRound, Regex,
@@ -70,16 +71,22 @@ const categoryMeta: Record<string, { color: string; bg: string; border: string; 
 };
 
 const ALL = "All";
+const FAVORITES = "★ Favorites";
 
 export default function HomePage() {
   const [query, setQuery] = useState("");
   const [activeCat, setActiveCat] = useState(ALL);
+  const { favorites, toggle, mounted } = useFavorites();
 
   const filtered = useMemo(() => {
     const q = query.toLowerCase().trim();
     return tools.filter((t) => {
-      const matchesCat = activeCat === ALL || t.category === activeCat;
-      if (!matchesCat) return false;
+      if (activeCat === FAVORITES) {
+        if (!favorites.has(t.path)) return false;
+      } else {
+        const matchesCat = activeCat === ALL || t.category === activeCat;
+        if (!matchesCat) return false;
+      }
       if (!q) return true;
       return (
         t.name.toLowerCase().includes(q) ||
@@ -87,9 +94,10 @@ export default function HomePage() {
         t.tags?.some((tag) => tag.includes(q))
       );
     });
-  }, [query, activeCat]);
+  }, [query, activeCat, favorites]);
 
   const isSearching = query.trim().length > 0 || activeCat !== ALL;
+  const showFavTab = mounted && favorites.size > 0;
 
   return (
     <div className="min-h-full">
@@ -162,6 +170,29 @@ export default function HomePage() {
           aria-label="Filter by category"
           className="flex gap-2 overflow-x-auto pb-0.5 scrollbar-none"
         >
+          {/* Favorites tab — only visible once the user has starred at least one tool */}
+          {showFavTab && (
+            <button
+              role="tab"
+              aria-selected={activeCat === FAVORITES}
+              onClick={() => setActiveCat(FAVORITES)}
+              className={cn(
+                "shrink-0 inline-flex items-center gap-1.5 rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-all whitespace-nowrap",
+                activeCat === FAVORITES
+                  ? "bg-amber-400 text-amber-950 shadow-sm"
+                  : "bg-amber-50 text-amber-700 border border-amber-200/70 hover:bg-amber-100 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-800/50 dark:hover:bg-amber-950/50"
+              )}
+            >
+              <Star className="h-3 w-3" fill="currentColor" aria-hidden="true" />
+              Favorites
+              <span className={cn(
+                "inline-flex items-center justify-center rounded-full text-[10px] font-bold px-1.5 py-0.5 min-w-[18px]",
+                activeCat === FAVORITES ? "bg-amber-950/20 text-amber-950" : "bg-amber-200/60 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300"
+              )}>
+                {favorites.size}
+              </span>
+            </button>
+          )}
           {[ALL, ...categories].map((cat) => {
             const count = cat === ALL ? tools.length : tools.filter((t) => t.category === cat).length;
             const isActive = activeCat === cat;
@@ -194,19 +225,34 @@ export default function HomePage() {
       {/* ── Tool grid ─────────────────────────────────────────── */}
       <div className="px-6 py-8">
         {isSearching ? (
-          /* Flat filtered results */
+          /* Flat filtered results (search / category / favorites) */
           <>
-            <p className="text-sm text-muted-foreground mb-5">
-              {filtered.length === 0
-                ? "No tools matched your search."
-                : `${filtered.length} tool${filtered.length !== 1 ? "s" : ""} found`}
-            </p>
+            {activeCat !== FAVORITES && (
+              <p className="text-sm text-muted-foreground mb-5">
+                {filtered.length === 0
+                  ? "No tools matched your search."
+                  : `${filtered.length} tool${filtered.length !== 1 ? "s" : ""} found`}
+              </p>
+            )}
+            {activeCat === FAVORITES && filtered.length === 0 && (
+              <div className="flex flex-col items-center justify-center py-20 text-center gap-3">
+                <Star className="h-10 w-10 text-amber-300" fill="currentColor" aria-hidden="true" />
+                <p className="text-sm font-medium text-muted-foreground">No favorites match your search.</p>
+              </div>
+            )}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
               {filtered.map((tool) => {
                 const meta = categoryMeta[tool.category];
                 const Icon = iconMap[tool.icon] ?? Braces;
                 return (
-                  <ToolCard key={tool.path} tool={tool} meta={meta} Icon={Icon} />
+                  <ToolCard
+                    key={tool.path}
+                    tool={tool}
+                    meta={meta}
+                    Icon={Icon}
+                    isFavorited={mounted && favorites.has(tool.path)}
+                    onToggleFav={(e) => { e.preventDefault(); toggle(tool.path); }}
+                  />
                 );
               })}
             </div>
@@ -232,7 +278,14 @@ export default function HomePage() {
                   {catTools.map((tool) => {
                     const Icon = iconMap[tool.icon] ?? Braces;
                     return (
-                      <ToolCard key={tool.path} tool={tool} meta={meta} Icon={Icon} />
+                      <ToolCard
+                        key={tool.path}
+                        tool={tool}
+                        meta={meta}
+                        Icon={Icon}
+                        isFavorited={mounted && favorites.has(tool.path)}
+                        onToggleFav={(e) => { e.preventDefault(); toggle(tool.path); }}
+                      />
                     );
                   })}
                 </div>
@@ -257,10 +310,14 @@ function ToolCard({
   tool,
   meta,
   Icon,
+  isFavorited = false,
+  onToggleFav,
 }: {
   tool: (typeof tools)[0];
   meta: (typeof categoryMeta)[string];
   Icon: LucideIcon;
+  isFavorited?: boolean;
+  onToggleFav?: (e: React.MouseEvent) => void;
 }) {
   const tags = tool.tags ?? [];
   const techTags = tags.filter((t) => TECH_KEYWORDS.has(t.toLowerCase())).slice(0, 3);
@@ -279,10 +336,30 @@ function ToolCard({
         <div className={cn("flex items-center justify-center w-9 h-9 rounded-lg shrink-0", meta.iconBg)}>
           <Icon className="h-[18px] w-[18px]" aria-hidden="true" />
         </div>
-        <ArrowRight
-          className="h-4 w-4 text-muted-foreground/30 group-hover:text-primary group-hover:translate-x-0.5 transition-all mt-0.5"
-          aria-hidden="true"
-        />
+        <div className="flex items-center gap-1">
+          {onToggleFav && (
+            <button
+              onClick={onToggleFav}
+              aria-label={isFavorited ? "Remove from favorites" : "Add to favorites"}
+              className={cn(
+                "rounded p-0.5 transition-colors opacity-0 group-hover:opacity-100 focus-visible:opacity-100",
+                isFavorited
+                  ? "opacity-100 text-amber-500 hover:text-amber-600"
+                  : "text-muted-foreground/40 hover:text-amber-400"
+              )}
+            >
+              <Star
+                className="h-3.5 w-3.5"
+                fill={isFavorited ? "currentColor" : "none"}
+                aria-hidden="true"
+              />
+            </button>
+          )}
+          <ArrowRight
+            className="h-4 w-4 text-muted-foreground/30 group-hover:text-primary group-hover:translate-x-0.5 transition-all mt-0.5"
+            aria-hidden="true"
+          />
+        </div>
       </div>
       <div>
         <p className="font-semibold text-sm mb-0.5 text-foreground">{tool.name}</p>
