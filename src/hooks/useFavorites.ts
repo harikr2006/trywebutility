@@ -10,20 +10,29 @@ export function useFavorites() {
   useEffect(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) setFavorites(new Set(JSON.parse(stored) as string[]));
+      if (stored) {
+        const paths = (JSON.parse(stored) as string[]).map((p) =>
+          p.replace(/\/$/, "") || "/"
+        );
+        setFavorites(new Set(paths));
+      }
     } catch {
       // ignore corrupt storage
     }
     setMounted(true);
   }, []);
 
+  // Normalize path: strip trailing slash so /foo/ and /foo both match registry paths
+  const normalize = (path: string) => path.replace(/\/$/, "") || "/";
+
   const toggle = useCallback((path: string) => {
+    const key = normalize(path);
     setFavorites((prev) => {
       const next = new Set(prev);
-      if (next.has(path)) {
-        next.delete(path);
+      if (next.has(key)) {
+        next.delete(key);
       } else {
-        next.add(path);
+        next.add(key);
       }
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify([...next]));

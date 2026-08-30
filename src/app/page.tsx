@@ -237,7 +237,9 @@ export default function HomePage() {
             {activeCat === FAVORITES && filtered.length === 0 && (
               <div className="flex flex-col items-center justify-center py-20 text-center gap-3">
                 <Star className="h-10 w-10 text-amber-300" fill="currentColor" aria-hidden="true" />
-                <p className="text-sm font-medium text-muted-foreground">No favorites match your search.</p>
+                <p className="text-sm font-medium text-muted-foreground">
+                  {query.trim() ? "No favorites match your search." : "Star tools to add them here."}
+                </p>
               </div>
             )}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
