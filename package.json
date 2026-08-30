@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "echo \"Static files already built in out/ — run npm run build:next to rebuild\"",
+    "build:next": "next build",
     "start": "next start",
     "lint": "eslint"
   },
