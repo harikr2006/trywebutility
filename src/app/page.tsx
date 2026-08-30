@@ -245,6 +245,13 @@ export default function HomePage() {
   );
 }
 
+const TECH_KEYWORDS = new Set([
+  "html", "css", "sql", "javascript", "js", "json", "xml", "yaml", "python",
+  "react", "jsx", "markdown", "base64", "toml", "svg", "regex", "typescript",
+  "ts", "http", "curl", "flexbox", "grid", "hmac", "totp", "jwt",
+  "sha256", "sha1", "base32", "diff", "env", "morse", "graphql",
+]);
+
 /* ── Tool card ─────────────────────────────────────────────── */
 function ToolCard({
   tool,
@@ -255,6 +262,10 @@ function ToolCard({
   meta: (typeof categoryMeta)[string];
   Icon: LucideIcon;
 }) {
+  const tags = tool.tags ?? [];
+  const techTags = tags.filter((t) => TECH_KEYWORDS.has(t.toLowerCase())).slice(0, 3);
+  const otherTags = tags.filter((t) => !TECH_KEYWORDS.has(t.toLowerCase())).slice(0, 2 - Math.max(0, techTags.length - 1));
+
   return (
     <Link
       href={tool.path}
@@ -279,9 +290,17 @@ function ToolCard({
           {tool.description}
         </p>
       </div>
-      {tool.tags && tool.tags.length > 0 && (
+      {(techTags.length > 0 || otherTags.length > 0) && (
         <div className="flex gap-1 flex-wrap mt-auto" aria-label="Tags">
-          {tool.tags.slice(0, 3).map((tag) => (
+          {techTags.map((tag) => (
+            <span
+              key={tag}
+              className="font-mono text-[10px] font-bold uppercase tracking-wide bg-primary/10 text-primary rounded px-1.5 py-px"
+            >
+              {tag}
+            </span>
+          ))}
+          {otherTags.map((tag) => (
             <span
               key={tag}
               className={cn("text-[10px] font-medium px-1.5 py-0.5 rounded-md", meta.pill)}

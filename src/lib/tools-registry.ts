@@ -671,6 +671,22 @@ export const tools: Tool[] = [
     category: "Converters",
     tags: ["xml", "yaml", "convert", "transform"],
   },
+  {
+    name: "CSS Grid Playground",
+    description: "Build CSS grid layouts visually — set columns, rows, gap, alignment and copy the generated CSS.",
+    path: "/css-grid",
+    icon: "Grid3x3",
+    category: "Generators",
+    tags: ["css", "grid", "layout", "playground", "generate"],
+  },
+  {
+    name: "Diff Checker",
+    description: "Compare two texts side by side with line numbers and character-level highlighting.",
+    path: "/diff-checker",
+    icon: "GitCompare",
+    category: "Testers & Analysis",
+    tags: ["diff", "compare", "text", "changes", "lines"],
+  },
 ];
 
 export const categories = [

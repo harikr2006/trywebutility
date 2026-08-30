@@ -12,7 +12,7 @@ export default function CSSGradientPage() {
   const [stops, setStops] = useState<ColorStop[]>(defaultStops());
 
   const css = generateGradientCSS(type, angle, stops);
-  const preview = css.replace("background: ", "");
+  const preview = css.replace("background: ", "").replace(/;$/, "");
 
   function updateStop(i: number, field: keyof ColorStop, value: string | number) {
     setStops(stops.map((s, idx) => idx === i ? { ...s, [field]: value } : s));
@@ -61,7 +61,7 @@ export default function CSSGradientPage() {
         </div>
 
         {/* Preview */}
-        <div className="rounded-xl h-32 border border-border/60" style={{ backgroundImage: preview }} />
+        <div className="rounded-xl h-32 border border-border/60" style={{ background: preview }} />
 
         {/* Output */}
         <div className="space-y-1.5">
