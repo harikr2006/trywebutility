@@ -1,4 +1,5 @@
 export default function AdPanel() {
+  return null; // AdSense hidden — remove this line to re-enable
   return (
     <aside
       aria-label="Advertisements"
