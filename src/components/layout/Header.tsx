@@ -223,16 +223,7 @@ export default function Header() {
 
           <ThemeToggle />
 
-          <a
-            href="https://buymeacoffee.com/harikr2006"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Buy me a coffee (opens in new tab)"
-            className="hidden sm:inline-flex items-center gap-1.5 h-8 px-3 rounded-lg text-xs font-semibold text-amber-900 bg-amber-400 hover:bg-amber-300 transition-colors shadow-sm select-none"
-          >
-            <span aria-hidden="true">☕</span>
-            <span className="hidden lg:inline">Buy me a coffee</span>
-          </a>
+          {/* buy-me-coffee hidden */}
         </div>
 
       </div>

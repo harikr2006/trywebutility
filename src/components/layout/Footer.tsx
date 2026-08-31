@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Braces, ExternalLink } from "lucide-react";
+import { Braces } from "lucide-react";
 
 const footerLinks = [
   {
@@ -80,16 +80,7 @@ export default function Footer() {
           <p className="text-xs text-muted-foreground text-center">
             Free developer tools. No tracking, no accounts, no data leaves your browser.
           </p>
-          <a
-            href="https://github.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="View source on GitHub (opens in new tab)"
-            className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-            GitHub
-          </a>
+          {/* github link hidden */}
         </div>
       </div>
     </footer>
