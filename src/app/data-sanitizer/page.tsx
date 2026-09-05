@@ -77,23 +77,34 @@ interface DiffPart {
   tag: string;
 }
 
-function buildDiff(original: string, sanitized: string, _rules: Rule[], enabledRules: Set<string>): DiffPart[] {
-  // Simple approach: re-run rules and track spans
+function buildDiff(original: string, _sanitized: string, customRules: { pattern: string; replacement: string }[], enabledRules: Set<string>, globalReplacement: string): DiffPart[] {
   const spans: { start: number; end: number; tag: string }[] = [];
   for (const rule of BUILT_IN_RULES) {
     if (!enabledRules.has(rule.id)) continue;
     const re = new RegExp(rule.pattern.source, rule.pattern.flags.includes("g") ? rule.pattern.flags : rule.pattern.flags + "g");
+    const rep = globalReplacement === "" ? rule.replacement : globalReplacement;
     let m: RegExpExecArray | null;
     while ((m = re.exec(original)) !== null) {
-      spans.push({ start: m.index, end: m.index + m[0].length, tag: rule.replacement });
+      spans.push({ start: m.index, end: m.index + m[0].length, tag: rep });
     }
+  }
+  for (const cr of customRules) {
+    if (!cr.pattern) continue;
+    try {
+      const re = new RegExp(cr.pattern, "g");
+      const rep = globalReplacement !== "" ? globalReplacement : (cr.replacement || "[REDACTED]");
+      let m: RegExpExecArray | null;
+      while ((m = re.exec(original)) !== null) {
+        spans.push({ start: m.index, end: m.index + m[0].length, tag: rep });
+      }
+    } catch { /* invalid regex — skip */ }
   }
   spans.sort((a, b) => a.start - b.start);
 
   const parts: DiffPart[] = [];
   let cursor = 0;
   for (const span of spans) {
-    if (span.start < cursor) continue; // overlapping — skip
+    if (span.start < cursor) continue;
     if (span.start > cursor) {
       parts.push({ text: original.slice(cursor, span.start), redacted: false, tag: "" });
     }
@@ -103,7 +114,6 @@ function buildDiff(original: string, sanitized: string, _rules: Rule[], enabledR
   if (cursor < original.length) {
     parts.push({ text: original.slice(cursor), redacted: false, tag: "" });
   }
-  void sanitized;
   return parts;
 }
 
@@ -149,8 +159,8 @@ export default function DataSanitizerPage() {
   );
 
   const diffParts = useMemo(
-    () => (showDiff && input ? buildDiff(input, output, BUILT_IN_RULES, enabled) : []),
-    [showDiff, input, output, enabled]
+    () => (showDiff && input ? buildDiff(input, output, customRules, enabled, globalReplacement) : []),
+    [showDiff, input, output, customRules, enabled, globalReplacement]
   );
 
   function toggleRule(id: string) {

@@ -26,23 +26,23 @@ export default function CountdownTimerPage() {
   const dateIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
-    if (running && remaining !== null && remaining > 0) {
-      intervalRef.current = setInterval(() => {
-        setRemaining((r) => {
-          if (r === null || r <= 1) {
-            setRunning(false);
-            return 0;
-          }
-          return r - 1;
-        });
-      }, 1000);
-    } else {
+    if (!running) {
       if (intervalRef.current) clearInterval(intervalRef.current);
+      return;
     }
+    intervalRef.current = setInterval(() => {
+      setRemaining((r) => {
+        if (r === null || r <= 1) {
+          setRunning(false);
+          return 0;
+        }
+        return r - 1;
+      });
+    }, 1000);
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [running, remaining]);
+  }, [running]);
 
   useEffect(() => {
     if (tab === "date" && target) {

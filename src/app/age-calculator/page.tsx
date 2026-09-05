@@ -19,8 +19,8 @@ function calcAge(dob: Date, asOf: Date) {
   const totalDays = Math.floor((asOf.getTime() - dob.getTime()) / 86400000);
   const dayOfWeek = dob.toLocaleDateString("en-US", { weekday: "long" });
   let nextBday = new Date(asOf.getFullYear(), dob.getMonth(), dob.getDate());
-  if (nextBday <= asOf) nextBday.setFullYear(nextBday.getFullYear() + 1);
-  const daysToNext = Math.ceil((nextBday.getTime() - asOf.getTime()) / 86400000);
+  if (nextBday < asOf) nextBday.setFullYear(nextBday.getFullYear() + 1);
+  const daysToNext = Math.round((nextBday.getTime() - asOf.getTime()) / 86400000);
   return { years, months, days, totalDays, totalWeeks: Math.floor(totalDays / 7), totalHours: totalDays * 24, dayOfWeek, daysToNext, nextBday };
 }
 
@@ -95,8 +95,8 @@ export default function AgeCalculatorPage() {
             <StatCard value={result.totalWeeks.toLocaleString()} label="Total Weeks Lived" />
             <StatCard value={result.totalHours.toLocaleString()} label="Total Hours Lived (approx.)" />
             <StatCard
-              value={`${result.daysToNext} day${result.daysToNext === 1 ? "" : "s"}`}
-              label={`Next Birthday — ${result.nextBday.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}`}
+              value={result.daysToNext === 0 ? "Today!" : `${result.daysToNext} day${result.daysToNext === 1 ? "" : "s"}`}
+              label={result.daysToNext === 0 ? "Next Birthday — Today!" : `Next Birthday — ${result.nextBday.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}`}
             />
             <StatCard value={result.dayOfWeek} label="Day of Week Born" />
           </div>

@@ -17,6 +17,7 @@ let nextId = 1;
 function buildRobotsTxt(rules: Rule[], sitemap: string): string {
   const groups: Record<string, { allows: string[]; disallows: string[] }> = {};
   for (const r of rules) {
+    if (!r.userAgent.trim() || !r.path.trim()) continue;
     if (!groups[r.userAgent]) groups[r.userAgent] = { allows: [], disallows: [] };
     if (r.type === "Allow") groups[r.userAgent].allows.push(r.path);
     else groups[r.userAgent].disallows.push(r.path);
@@ -38,8 +39,10 @@ function downloadFile(content: string, filename: string) {
   const a = document.createElement("a");
   a.href = url;
   a.download = filename;
+  document.body.appendChild(a);
   a.click();
-  URL.revokeObjectURL(url);
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
 }
 
 const UA_PRESETS = ["*", "Googlebot", "Bingbot", "Slurp", "DuckDuckBot"];
@@ -92,10 +95,7 @@ export default function RobotsTxtPage() {
                 className={`${inputClass} w-28`}
                 placeholder="custom bot"
                 value={UA_PRESETS.includes(rule.userAgent) ? "" : rule.userAgent}
-                onFocus={() => {
-                  if (UA_PRESETS.includes(rule.userAgent)) updateRule(rule.id, "userAgent", "");
-                }}
-                onChange={(e) => updateRule(rule.id, "userAgent", e.target.value)}
+                onChange={(e) => updateRule(rule.id, "userAgent", e.target.value || "*")}
               />
               <select
                 value={rule.type}

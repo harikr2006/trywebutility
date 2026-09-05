@@ -134,13 +134,14 @@ export default function PomodoroPage() {
 
   function skip() {
     const { phase, pomodoros, settings } = stateRef.current;
-    const nextPhase: Phase =
-      phase !== "work"
-        ? "work"
-        : (pomodoros + 1) % settings.longAfter === 0
-        ? "long"
-        : "short";
-    switchPhase(nextPhase);
+    if (phase === "work") {
+      const newPomodoros = pomodoros + 1;
+      setPomodoros(newPomodoros);
+      const nextPhase: Phase = newPomodoros % settings.longAfter === 0 ? "long" : "short";
+      switchPhase(nextPhase);
+    } else {
+      switchPhase("work");
+    }
   }
 
   // Update document title while running

@@ -104,7 +104,7 @@ export default function NpmScriptsPage() {
     2
   );
 
-  const scriptsCopyText = `"scripts": ${scriptsJson}`;
+  const scriptsCopyText = activeScripts.length > 0 ? `"scripts": ${scriptsJson}` : "";
 
   return (
     <ToolShell

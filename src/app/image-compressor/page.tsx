@@ -28,7 +28,8 @@ function compressImageFile(item: ImageItem, quality: number): Promise<Blob | nul
       const canvas = document.createElement("canvas");
       canvas.width = img.naturalWidth;
       canvas.height = img.naturalHeight;
-      const ctx = canvas.getContext("2d")!;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) { resolve(null); return; }
       ctx.drawImage(img, 0, 0);
       // PNG → WebP for actual compression; JPEG/WebP use native format
       const outType = item.file.type === "image/png" ? "image/webp" : item.file.type;
@@ -188,7 +189,12 @@ export default function ImageCompressorPage() {
                   size="sm"
                   variant="ghost"
                   className="text-muted-foreground"
-                  onClick={() => setImages([])}
+                  onClick={() => {
+                    setImages((prev) => {
+                      prev.forEach((item) => URL.revokeObjectURL(item.originalUrl));
+                      return [];
+                    });
+                  }}
                 >
                   Clear All
                 </Button>

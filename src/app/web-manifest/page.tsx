@@ -35,13 +35,15 @@ function buildManifest(f: ManifestForm): string {
 }
 
 function downloadFile(content: string, filename: string) {
-  const blob = new Blob([content], { type: "application/json" });
+  const blob = new Blob([content], { type: "application/manifest+json" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
   a.download = filename;
+  document.body.appendChild(a);
   a.click();
-  URL.revokeObjectURL(url);
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
 }
 
 const labelClass = "text-xs font-semibold text-muted-foreground uppercase tracking-wide";

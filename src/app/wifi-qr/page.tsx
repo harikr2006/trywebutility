@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ToolShell from "@/components/shared/ToolShell";
 import { Button } from "@/components/ui/button";
 import { Eye, EyeOff, AlertCircle, Download } from "lucide-react";
@@ -12,6 +12,10 @@ const SECURITY_OPTIONS = [
   { label: "None", value: "nopass" },
 ];
 
+function escapeWifi(value: string): string {
+  return value.replace(/[\\;,":]/g, (c) => `\\${c}`);
+}
+
 async function generateWifiQR(
   ssid: string,
   password: string,
@@ -19,8 +23,8 @@ async function generateWifiQR(
   hidden: boolean,
   size: number
 ): Promise<string> {
-  let wifiString = `WIFI:T:${security};S:${ssid};`;
-  if (security !== "nopass") wifiString += `P:${password};`;
+  let wifiString = `WIFI:T:${security};S:${escapeWifi(ssid)};`;
+  if (security !== "nopass") wifiString += `P:${escapeWifi(password)};`;
   wifiString += `H:${hidden};;`;
   return QRCode.toDataURL(wifiString, { width: size, margin: 2 });
 }
@@ -35,6 +39,7 @@ export default function WifiQRPage() {
   const [dataUrl, setDataUrl] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const isFirstRun = useRef(true);
 
   async function handleGenerate(
     currentSsid = ssid,
@@ -68,6 +73,7 @@ export default function WifiQRPage() {
   }
 
   useEffect(() => {
+    if (isFirstRun.current) { isFirstRun.current = false; return; }
     handleGenerate(ssid, password, security, hidden, size);
   }, [ssid, password, security, hidden, size]);
 

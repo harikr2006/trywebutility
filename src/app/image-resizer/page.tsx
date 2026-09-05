@@ -14,10 +14,11 @@ function resizeImage(file: File, width: number, height: number, format: string, 
       const canvas = document.createElement('canvas');
       canvas.width = width;
       canvas.height = height;
-      const ctx = canvas.getContext('2d')!;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) { resolve(new Blob()); return; }
       ctx.drawImage(img, 0, 0, width, height);
       const mime = format === 'PNG' ? 'image/png' : format === 'WebP' ? 'image/webp' : 'image/jpeg';
-      canvas.toBlob((blob) => resolve(blob!), mime, quality / 100);
+      canvas.toBlob((blob) => resolve(blob ?? new Blob()), mime, quality / 100);
     };
     img.src = url;
   });
@@ -45,8 +46,7 @@ export default function ImageResizerPage() {
   const [isProcessing, setIsProcessing] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const prevPreviewRef = useRef<string | null>(null);
-  const prevDownloadRef = useRef<string | null>(null);
+  const prevBlobUrlRef = useRef<string | null>(null);
 
   const handleFile = useCallback((f: File) => {
     const img = new Image();
@@ -94,15 +94,12 @@ export default function ImageResizerPage() {
   const handleResize = async () => {
     if (!file || !width || !height) return;
     setIsProcessing(true);
-    if (prevPreviewRef.current) URL.revokeObjectURL(prevPreviewRef.current);
-    if (prevDownloadRef.current) URL.revokeObjectURL(prevDownloadRef.current);
+    if (prevBlobUrlRef.current) URL.revokeObjectURL(prevBlobUrlRef.current);
     const blob = await resizeImage(file, width, height, format, quality);
-    const pUrl = URL.createObjectURL(blob);
-    const dUrl = URL.createObjectURL(blob);
-    prevPreviewRef.current = pUrl;
-    prevDownloadRef.current = dUrl;
-    setPreviewUrl(pUrl);
-    setDownloadUrl(dUrl);
+    const blobUrl = URL.createObjectURL(blob);
+    prevBlobUrlRef.current = blobUrl;
+    setPreviewUrl(blobUrl);
+    setDownloadUrl(blobUrl);
     setOutputSize(blob.size);
     setIsProcessing(false);
   };
@@ -232,7 +229,7 @@ export default function ImageResizerPage() {
               disabled={isProcessing || !width || !height}
               className="w-full"
             >
-              {isProcessing ? "Processing…" : "Resize & Download"}
+              {isProcessing ? "Processing…" : "Resize Image"}
             </Button>
           </div>
         )}

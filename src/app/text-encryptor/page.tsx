@@ -21,7 +21,9 @@ async function encrypt(text: string, passphrase: string): Promise<string> {
   combined.set(salt, 0);
   combined.set(iv, 16);
   combined.set(new Uint8Array(ciphertext), 28);
-  return btoa(String.fromCharCode(...combined));
+  let binary = "";
+  combined.forEach((b) => (binary += String.fromCharCode(b)));
+  return btoa(binary);
 }
 
 async function decrypt(base64: string, passphrase: string): Promise<string> {

@@ -157,17 +157,19 @@ export default function CorsGeneratorPage() {
   }
 
   function toggleMethod(m: string) {
-    const next = new Set(config.methods);
-    if (next.has(m)) next.delete(m);
-    else next.add(m);
-    setField("methods", next);
+    setConfig((prev) => {
+      const next = new Set(prev.methods);
+      next.has(m) ? next.delete(m) : next.add(m);
+      return { ...prev, methods: next };
+    });
   }
 
   function toggleHeader(h: string) {
-    const next = new Set(config.allowedHeaders);
-    if (next.has(h)) next.delete(h);
-    else next.add(h);
-    setField("allowedHeaders", next);
+    setConfig((prev) => {
+      const next = new Set(prev.allowedHeaders);
+      next.has(h) ? next.delete(h) : next.add(h);
+      return { ...prev, allowedHeaders: next };
+    });
   }
 
   const outputs: Record<Tab, string> = {

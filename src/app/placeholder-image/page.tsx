@@ -39,8 +39,8 @@ export default function PlaceholderImagePage() {
 
     // Text
     const displayText = customText
-      .replace("{width}", String(width))
-      .replace("{height}", String(height));
+      .replaceAll("{width}", String(width))
+      .replaceAll("{height}", String(height));
 
     const fontSize = autoFontSize
       ? Math.max(12, Math.min(Math.floor(width / 8), Math.floor(height / 4), 72))

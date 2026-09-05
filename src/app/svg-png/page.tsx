@@ -67,6 +67,7 @@ export default function SvgPngPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const anchorRef = useRef<HTMLAnchorElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const prevPngUrlRef = useRef<string>("");
 
   const effectiveScale = useCustom ? customScale : scale;
 
@@ -136,7 +137,13 @@ export default function SvgPngPage() {
       const canvas = canvasRef.current!;
       canvas.width = targetW;
       canvas.height = targetH;
-      const ctx = canvas.getContext("2d")!;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) {
+        setError("Canvas context unavailable.");
+        setConverting(false);
+        URL.revokeObjectURL(url);
+        return;
+      }
       ctx.clearRect(0, 0, targetW, targetH);
       ctx.drawImage(img, 0, 0, targetW, targetH);
       URL.revokeObjectURL(url);
@@ -147,7 +154,9 @@ export default function SvgPngPage() {
           setConverting(false);
           return;
         }
+        if (prevPngUrlRef.current) URL.revokeObjectURL(prevPngUrlRef.current);
         const pngUrl = URL.createObjectURL(pngBlob);
+        prevPngUrlRef.current = pngUrl;
         setPngUrl(pngUrl);
         setOutputInfo(
           `${targetW} × ${targetH}px · ${formatBytes(pngBlob.size)}`

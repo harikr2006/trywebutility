@@ -86,17 +86,18 @@ export default function TailwindColorsPage() {
   }, []);
 
   const scale = generateScale(baseHex);
+  const safeName = colorName.trim() || "brand";
 
   const configOutput = [
     `colors: {`,
-    `  ${colorName}: {`,
+    `  ${safeName}: {`,
     ...scale.map(({ shade, hex }) => `    ${shade}: '${hex}',`),
     `  }`,
     `}`,
   ].join("\n");
 
   const cssVarsOutput = scale
-    .map(({ shade, hex }) => `  --color-${colorName}-${shade}: ${hex};`)
+    .map(({ shade, hex }) => `  --color-${safeName}-${shade}: ${hex};`)
     .join("\n");
   const cssVarsFull = `:root {\n${cssVarsOutput}\n}`;
 

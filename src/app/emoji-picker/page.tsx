@@ -335,6 +335,9 @@ export default function EmojiPickerPage() {
       });
       setToast(`Copied ${emoji} ${name}`);
       setTimeout(() => setToast(null), 2000);
+    }).catch(() => {
+      setToast("Copy failed — try clicking again");
+      setTimeout(() => setToast(null), 2000);
     });
   }
 
