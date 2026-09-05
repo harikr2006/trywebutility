@@ -14,6 +14,8 @@ import {
   FileJson2, CalendarDays, Ruler, Link2, TableProperties, Tags, Eye, Calculator,
   FileCheck2, Unlink, FileSpreadsheet, Wand2, Frame, PaintBucket, Share2,
   GitCompare, ShieldAlert, GraduationCap, Grid3x3,
+  Bot, Spline, ListOrdered, Smile, Minimize2, FileSearch, Timer,
+  Send, Wifi,
   ArrowRight, Star, LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -30,6 +32,8 @@ const iconMap: Record<string, LucideIcon> = {
   FileJson2, CalendarDays, Ruler, Link2, TableProperties, Tags, Eye, Calculator,
   FileCheck2, Unlink, FileSpreadsheet, Wand2, Frame, PaintBucket, Share2,
   GitCompare, ShieldAlert, GraduationCap, Grid3x3,
+  Bot, Spline, ListOrdered, Smile, Minimize2, FileSearch, Timer,
+  Send, Wifi,
 };
 
 const categoryMeta: Record<string, { color: string; bg: string; border: string; iconBg: string; pill: string }> = {
