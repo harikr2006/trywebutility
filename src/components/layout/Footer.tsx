@@ -10,6 +10,7 @@ const footerLinks = [
       { label: "SQL Formatter", href: "/sql-formatter" },
       { label: "CSS Formatter", href: "/css-formatter" },
       { label: "HTML Formatter", href: "/html-formatter" },
+      { label: "Alternatives", href: "/alternatives" },
     ],
   },
   {
