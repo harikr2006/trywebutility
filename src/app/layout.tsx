@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     template: "%s | WebUtility",
   },
   description:
-    "82+ free browser-based developer tools. JSON formatter, regex tester, Base64 encoder, color contrast checker, unit converter, and many more. No sign-up required, no data leaves your browser.",
+    "110+ free browser-based developer tools. JSON formatter, regex tester, Base64 encoder, color contrast checker, unit converter, and many more. No sign-up required, no data leaves your browser.",
   keywords: [
     "developer tools", "online tools", "JSON formatter", "base64 encoder",
     "regex tester", "URL encoder", "JWT decoder", "CSS formatter",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "WebUtility — Free Developer & Tech Tools",
     description:
-      "82+ free browser-based developer tools. No sign-up, no tracking, no data leaves your browser.",
+      "110+ free browser-based developer tools. No sign-up, no tracking, no data leaves your browser.",
     type: "website",
     siteName: "WebUtility",
   },
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "WebUtility — Free Developer & Tech Tools",
     description:
-      "82+ free browser-based developer tools. No sign-up, no tracking, no data leaves your browser.",
+      "110+ free browser-based developer tools. No sign-up, no tracking, no data leaves your browser.",
   },
   robots: { index: true, follow: true },
   metadataBase: new URL("https://trywebutility.com"),
