@@ -15,7 +15,7 @@ import {
   FileCheck2, Unlink, FileSpreadsheet, Wand2, Frame, PaintBucket, Share2,
   GitCompare, ShieldAlert, GraduationCap, Grid3x3,
   Bot, Spline, ListOrdered, Smile, Minimize2, FileSearch, Timer,
-  Send, Wifi,
+  Send, Wifi, Server, MapPin, FileImage, Droplets, Scissors,
   ArrowRight, Star, LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -33,7 +33,7 @@ const iconMap: Record<string, LucideIcon> = {
   FileCheck2, Unlink, FileSpreadsheet, Wand2, Frame, PaintBucket, Share2,
   GitCompare, ShieldAlert, GraduationCap, Grid3x3,
   Bot, Spline, ListOrdered, Smile, Minimize2, FileSearch, Timer,
-  Send, Wifi,
+  Send, Wifi, Server, MapPin, FileImage, Droplets, Scissors,
 };
 
 const categoryMeta: Record<string, { color: string; bg: string; border: string; iconBg: string; pill: string }> = {

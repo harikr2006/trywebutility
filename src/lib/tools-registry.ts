@@ -904,6 +904,46 @@ export const tools: Tool[] = [
     category: "Encoders & Decoders",
     tags: ["encrypt", "decrypt", "aes", "crypto", "password", "secure"],
   },
+  {
+    name: "DNS Lookup",
+    description: "Query DNS records (A, AAAA, MX, CNAME, TXT, NS, SOA) for any domain via Google DNS-over-HTTPS.",
+    path: "/dns-lookup",
+    icon: "Server",
+    category: "Testers & Analysis",
+    tags: ["dns", "network", "lookup", "domain", "records", "mx", "cname"],
+  },
+  {
+    name: "IP Geolocation",
+    description: "Instantly look up the location, ISP, timezone, and ASN for any IP address — or detect your own.",
+    path: "/ip-geolocation",
+    icon: "MapPin",
+    category: "Testers & Analysis",
+    tags: ["ip", "geolocation", "location", "network", "isp", "timezone"],
+  },
+  {
+    name: "Code to Image",
+    description: "Turn your code snippet into a beautiful shareable image with syntax highlighting and custom themes.",
+    path: "/code-to-image",
+    icon: "FileImage",
+    category: "Generators",
+    tags: ["code", "image", "screenshot", "share", "syntax", "carbon"],
+  },
+  {
+    name: "Color Shades Generator",
+    description: "Generate a full 11-step shade palette (50–950) from any base color with Tailwind and CSS output.",
+    path: "/color-shades",
+    icon: "Droplets",
+    category: "Generators",
+    tags: ["css", "color", "shades", "palette", "tailwind", "design"],
+  },
+  {
+    name: "CSS Clip Path Generator",
+    description: "Visually build polygon, circle, and ellipse clip-paths with a drag-and-drop editor.",
+    path: "/css-clip-path",
+    icon: "Scissors",
+    category: "Generators",
+    tags: ["css", "clip-path", "polygon", "design", "shapes", "mask"],
+  },
 ];
 
 export const categories = [
