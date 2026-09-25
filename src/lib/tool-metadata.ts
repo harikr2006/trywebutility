@@ -673,6 +673,36 @@ const toolMetadataMap: Record<string, ToolSEO> = {
       "Free online countdown timer. Count down from a custom duration or to a specific future date and time. Great for events, deadlines, product launches, and exams.",
     keywords: ["countdown timer online", "event countdown timer", "date countdown tool", "deadline timer online", "count down to date"],
   },
+  "dns-lookup": {
+    title: "DNS Lookup Tool Online — Query A MX TXT CNAME Records",
+    description:
+      "Free online DNS lookup tool. Query DNS records for any domain including A, AAAA, MX, CNAME, TXT, NS, SOA, and PTR types. Uses Google DNS-over-HTTPS. No install needed.",
+    keywords: ["dns lookup online", "dns record lookup", "mx record checker", "cname lookup tool", "txt record lookup", "nslookup online"],
+  },
+  "ip-geolocation": {
+    title: "IP Geolocation Lookup Online — City Region & ISP",
+    description:
+      "Free online IP geolocation tool. Look up the country, city, region, timezone, latitude/longitude, and ISP for any IPv4 or IPv6 address. Runs in your browser.",
+    keywords: ["ip geolocation lookup", "ip location finder", "ip address lookup", "find ip location online", "ip info tool"],
+  },
+  "code-to-image": {
+    title: "Code to Image Generator Online — Beautiful Code Screenshots",
+    description:
+      "Free online code to image converter. Turn code snippets into beautiful, shareable images with syntax highlighting, multiple themes, and line numbers. Download as PNG.",
+    keywords: ["code to image generator", "code screenshot tool", "code image maker online", "syntax highlight image", "code snippet image"],
+  },
+  "color-shades": {
+    title: "Color Shades Generator Online — 50–950 Shade Scale",
+    description:
+      "Free online color shades generator. Generate a full 50 to 950 lightness scale from any base color. Copy HEX values or export a Tailwind-compatible palette. No login.",
+    keywords: ["color shades generator", "color tints and shades", "color shade scale online", "hex color shades", "generate color palette"],
+  },
+  "css-clip-path": {
+    title: "CSS Clip Path Generator Online — Visual Shape Builder",
+    description:
+      "Free online CSS clip-path generator. Create polygon, circle, and ellipse clip paths with a draggable visual editor and live preview. Copy the clip-path CSS instantly.",
+    keywords: ["css clip path generator", "clip path builder online", "css polygon generator", "clip path visual editor", "css shape cutter"],
+  },
 };
 
 export function getToolMetadata(slug: string): import("next").Metadata {
@@ -687,7 +717,7 @@ export function getToolMetadata(slug: string): import("next").Metadata {
       title: `${tool.title} | WebUtility`,
       description: tool.description,
       type: "website",
-      url: `https://trywebutility.com/${slug}`,
+      url: `https://trywebutility.com/${slug}/`,
       siteName: "WebUtility",
     },
     twitter: {
@@ -696,7 +726,7 @@ export function getToolMetadata(slug: string): import("next").Metadata {
       description: tool.description,
     },
     alternates: {
-      canonical: `https://trywebutility.com/${slug}`,
+      canonical: `https://trywebutility.com/${slug}/`,
     },
   };
 }

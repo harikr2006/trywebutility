@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import CanonicalLink from "@/components/shared/CanonicalLink";
 import Header from "@/components/layout/Header";
 import Sidebar from "@/components/layout/Sidebar";
 import AdPanel from "@/components/layout/AdPanel";
@@ -54,7 +53,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <CanonicalLink />
         {/* Prevent flash of unstyled dark/light mode — must be synchronous */}
         <script
           dangerouslySetInnerHTML={{

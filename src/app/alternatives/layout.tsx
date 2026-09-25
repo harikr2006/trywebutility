@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description:
       "111+ free browser-based developer tools. A privacy-first alternative to CodeBeautify, JSONFormatter.org, and SmallDev.tools. No login, no data leaves your browser.",
     type: "website",
-    url: "https://trywebutility.com/alternatives",
+    url: "https://trywebutility.com/alternatives/",
     siteName: "WebUtility",
   },
   twitter: {
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
       "111+ free browser-based developer tools. Privacy-first, no login, no data sent to servers.",
   },
   alternates: {
-    canonical: "https://trywebutility.com/alternatives",
+    canonical: "https://trywebutility.com/alternatives/",
   },
 };
 
