@@ -41,7 +41,12 @@ export default function AspectRatioPage() {
           <div className="flex items-center gap-2">
             <input type="number" value={newW} onChange={(e) => { setNewW(e.target.value); setNewH(""); }} placeholder="New width"
               className="flex-1 h-9 rounded-md border border-border/60 bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
-            {byW && <span className="text-sm text-muted-foreground">→ height: <strong className="font-mono text-foreground">{byW.height}</strong></span>}
+            {byW && (
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground">→ height: <strong className="font-mono text-foreground">{byW.height}</strong></span>
+                <CopyButton text={String(byW.height)} />
+              </div>
+            )}
           </div>
         </div>
 
@@ -50,7 +55,12 @@ export default function AspectRatioPage() {
           <div className="flex items-center gap-2">
             <input type="number" value={newH} onChange={(e) => { setNewH(e.target.value); setNewW(""); }} placeholder="New height"
               className="flex-1 h-9 rounded-md border border-border/60 bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
-            {byH && <span className="text-sm text-muted-foreground">→ width: <strong className="font-mono text-foreground">{byH.width}</strong></span>}
+            {byH && (
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground">→ width: <strong className="font-mono text-foreground">{byH.width}</strong></span>
+                <CopyButton text={String(byH.width)} />
+              </div>
+            )}
           </div>
         </div>
 

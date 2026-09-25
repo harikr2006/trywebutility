@@ -36,12 +36,19 @@ function StatCard({ value, label }: { value: string; label: string }) {
 export default function AgeCalculatorPage() {
   const [dob, setDob] = useState("1990-01-01");
   const [asOf, setAsOf] = useState(today);
+  const [calcDob, setCalcDob] = useState("1990-01-01");
+  const [calcAsOf, setCalcAsOf] = useState(today);
 
   const inputCls = "h-9 rounded-md border border-border/60 bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 w-full";
 
-  const dobDate = new Date(dob + "T00:00:00");
-  const asOfDate = new Date(asOf + "T00:00:00");
-  const valid = dob && asOf && !isNaN(dobDate.getTime()) && !isNaN(asOfDate.getTime()) && dobDate <= asOfDate;
+  function handleCalculate() {
+    setCalcDob(dob);
+    setCalcAsOf(asOf);
+  }
+
+  const dobDate = new Date(calcDob + "T00:00:00");
+  const asOfDate = new Date(calcAsOf + "T00:00:00");
+  const valid = calcDob && calcAsOf && !isNaN(dobDate.getTime()) && !isNaN(asOfDate.getTime()) && dobDate <= asOfDate;
   const result = valid ? calcAge(dobDate, asOfDate) : null;
 
   return (
@@ -72,17 +79,14 @@ export default function AgeCalculatorPage() {
         </div>
 
         <Button
-          onClick={() => {
-            setDob(dob);
-            setAsOf(asOf);
-          }}
+          onClick={handleCalculate}
           className="w-full sm:w-auto self-start"
         >
           <CalendarDays className="h-4 w-4 mr-2" />
           Calculate Age
         </Button>
 
-        {!valid && dob && asOf && (
+        {!valid && calcDob && calcAsOf && (
           <p className="text-sm text-destructive">Date of birth must be before or equal to the "As of" date.</p>
         )}
 

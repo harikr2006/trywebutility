@@ -64,7 +64,7 @@ function transform(text: string, mode: ModeId): string {
     case "flip-upside-down":
       return flipUpsideDown(text);
     case "mirror":
-      return reverseChars(text);
+      return text.split("\n").map(reverseChars).join("\n");
     default:
       return "";
   }

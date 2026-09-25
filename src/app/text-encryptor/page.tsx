@@ -87,6 +87,7 @@ export default function TextEncryptorPage() {
   }
 
   function handleClear() {
+    if (output && !window.confirm("This will also clear your passphrase. Continue?")) return;
     setInput("");
     setOutput("");
     setError(null);

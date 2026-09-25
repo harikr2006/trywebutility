@@ -17,10 +17,12 @@ export default function JWTGeneratorPage() {
   const [algorithm, setAlgorithm] = useState<Algorithm>("HS256");
   const [output, setOutput] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   async function handleGenerate() {
     setError("");
     setOutput("");
+    setLoading(true);
 
     let parsedPayload: Record<string, unknown>;
     try {
@@ -31,8 +33,9 @@ export default function JWTGeneratorPage() {
     }
 
     const { token, error: err } = await generateJWT(parsedPayload, secret, algorithm);
-    if (err) { setError(err); return; }
+    if (err) { setError(err); setLoading(false); return; }
     setOutput(token);
+    setLoading(false);
   }
 
   return (
@@ -75,9 +78,12 @@ export default function JWTGeneratorPage() {
         </div>
 
         {/* Generate button */}
-        <div>
-          <Button size="sm" className="h-8" onClick={handleGenerate}>
-            Generate
+        <div className="flex gap-2">
+          <Button size="sm" className="h-8" onClick={handleGenerate} disabled={loading}>
+            {loading ? "Generating…" : "Generate"}
+          </Button>
+          <Button size="sm" className="h-8" variant="ghost" onClick={() => { setOutput(""); setError(""); setPayloadStr(DEFAULT_PAYLOAD()); setSecret(""); }}>
+            Clear
           </Button>
         </div>
 

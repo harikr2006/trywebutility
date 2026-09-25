@@ -94,8 +94,11 @@ function buildDiff(original: string, _sanitized: string, customRules: { pattern:
       const re = new RegExp(cr.pattern, "g");
       const rep = globalReplacement !== "" ? globalReplacement : (cr.replacement || "[REDACTED]");
       let m: RegExpExecArray | null;
+      let iterations = 0;
       while ((m = re.exec(original)) !== null) {
+        if (++iterations > 10_000) break;
         spans.push({ start: m.index, end: m.index + m[0].length, tag: rep });
+        if (m[0].length === 0) re.lastIndex++;
       }
     } catch { /* invalid regex — skip */ }
   }
@@ -133,7 +136,12 @@ function sanitize(text: string, enabledRules: Set<string>, customRules: { patter
     try {
       const re = new RegExp(cr.pattern, "g");
       const rep = cr.replacement || "[REDACTED]";
-      output = output.replace(re, () => { count++; return rep; });
+      let matchCount = 0;
+      output = output.replace(re, () => {
+        if (++matchCount > 10_000) return "";
+        count++;
+        return rep;
+      });
     } catch {
       // invalid regex — skip
     }

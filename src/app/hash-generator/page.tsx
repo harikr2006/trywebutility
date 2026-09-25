@@ -40,13 +40,19 @@ export default function HashGeneratorPage() {
     setError(null);
     setLoading(true);
     const newResults: Record<string, string> = {};
+    const failedAlgos: string[] = [];
     for (const algo of selectedAlgos) {
       try {
         const hash = await hashText(input, algo as "MD5" | "SHA-1" | "SHA-256" | "SHA-512");
         newResults[algo] = hash;
-      } catch { /* skip failed algo */ }
+      } catch {
+        failedAlgos.push(algo);
+      }
     }
     setResults(newResults);
+    if (failedAlgos.length > 0) {
+      setError(`Some algorithms failed: ${failedAlgos.join(", ")}`);
+    }
     setLoading(false);
   }
 

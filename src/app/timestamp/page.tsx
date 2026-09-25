@@ -25,8 +25,16 @@ export default function TimestampPage() {
   function convertUnixToDate() {
     setUnixError("");
     setUnixResult(null);
-    const r = unixToDate(Number(unixInput));
-    setUnixResult(r);
+    if (!unixInput.trim()) {
+      setUnixError("Please enter a Unix timestamp.");
+      return;
+    }
+    try {
+      const r = unixToDate(Number(unixInput));
+      setUnixResult(r);
+    } catch (e) {
+      setUnixError(e instanceof Error ? e.message : "Invalid timestamp.");
+    }
   }
 
   function convertDateToUnix() {

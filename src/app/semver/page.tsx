@@ -2,7 +2,7 @@
 import { useState } from "react";
 import ToolShell from "@/components/shared/ToolShell";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, XCircle } from "lucide-react";
+import { CheckCircle, XCircle, AlertCircle } from "lucide-react";
 import { parseSemver, compareSemver } from "@/lib/tools/semver";
 
 export default function SemverPage() {
@@ -11,11 +11,15 @@ export default function SemverPage() {
   const [vB, setVB] = useState("1.2.4");
 
   const info = parseSemver(input);
-  const cmp = (() => {
+  const cmpResult = (() => {
+    const aInfo = parseSemver(vA);
+    const bInfo = parseSemver(vB);
+    if (!aInfo.valid) return { error: `Version A: ${aInfo.error}` };
+    if (!bInfo.valid) return { error: `Version B: ${bInfo.error}` };
     const r = compareSemver(vA, vB);
-    if (r > 0) return `${vA} > ${vB}`;
-    if (r < 0) return `${vA} < ${vB}`;
-    return `${vA} = ${vB}`;
+    if (r > 0) return { result: `${vA} > ${vB}` };
+    if (r < 0) return { result: `${vA} < ${vB}` };
+    return { result: `${vA} = ${vB}` };
   })();
 
   const fields = info.valid ? [
@@ -69,9 +73,16 @@ export default function SemverPage() {
             <input type="text" value={vB} onChange={(e) => setVB(e.target.value)}
               className="flex-1 h-9 rounded-md border border-border/60 bg-background px-3 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
           </div>
-          <div className="rounded-lg bg-muted/30 border border-border/60 px-4 py-3 font-mono text-sm">
-            {cmp}
-          </div>
+          {cmpResult.error ? (
+            <div className="flex gap-2 rounded-lg border border-destructive/40 bg-destructive/8 p-3 text-sm text-destructive">
+              <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
+              <span>{cmpResult.error}</span>
+            </div>
+          ) : (
+            <div className="rounded-lg bg-muted/30 border border-border/60 px-4 py-3 font-mono text-sm">
+              {cmpResult.result}
+            </div>
+          )}
         </div>
       </div>
     </ToolShell>

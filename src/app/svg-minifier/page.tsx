@@ -77,6 +77,24 @@ export default function SvgMinifierPage() {
           </div>
         )}
 
+        {/* Actions */}
+        <div className="flex gap-2">
+          <Button size="sm" className="h-8" onClick={handleMinify}>
+            Minify
+          </Button>
+          <Button size="sm" className="h-8" variant="ghost" onClick={handleClear}>
+            Clear
+          </Button>
+        </div>
+
+        {/* Error */}
+        {error && (
+          <div className="flex gap-2 rounded-lg border border-destructive/40 bg-destructive/8 p-3 text-sm text-destructive font-mono">
+            <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
+            <span>{error}</span>
+          </div>
+        )}
+
         {/* Two-column layout */}
         <div className="grid gap-4 lg:grid-cols-2">
           <div className="space-y-1.5">
@@ -96,7 +114,7 @@ export default function SvgMinifierPage() {
               <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
                 Minified Output
               </label>
-              {output && <CopyButton text={output} />}
+              <CopyButton text={output} />
             </div>
             <Textarea
               value={output}
@@ -106,24 +124,6 @@ export default function SvgMinifierPage() {
             />
           </div>
         </div>
-
-        {/* Actions */}
-        <div className="flex gap-2">
-          <Button size="sm" className="h-8" onClick={handleMinify}>
-            Minify
-          </Button>
-          <Button size="sm" className="h-8" variant="outline" onClick={handleClear}>
-            Clear
-          </Button>
-        </div>
-
-        {/* Error */}
-        {error && (
-          <div className="flex items-center gap-2 text-sm text-destructive">
-            <AlertCircle className="h-4 w-4 shrink-0" />
-            <span>{error}</span>
-          </div>
-        )}
 
         {/* SVG preview */}
         {showPreview && (

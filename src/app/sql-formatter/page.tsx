@@ -38,7 +38,7 @@ export default function SQLFormatterPage() {
         <Button size="sm" className="h-8" onClick={handleFormat}>
           Format
         </Button>
-        <Button size="sm" className="h-8" onClick={handleMinify}>
+        <Button size="sm" className="h-8" variant="outline" onClick={handleMinify}>
           Minify
         </Button>
         <select

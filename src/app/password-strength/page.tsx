@@ -2,6 +2,7 @@
 import { useState } from "react";
 import ToolShell from "@/components/shared/ToolShell";
 import { CheckCircle, XCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { checkPasswordStrength } from "@/lib/tools/password-strength";
 
 const SCORE_COLORS = [
@@ -50,6 +51,7 @@ export default function PasswordStrengthPage() {
               className="h-10 px-3 rounded-md border border-border/60 text-xs font-medium text-muted-foreground hover:bg-muted/40 transition-colors">
               {show ? "Hide" : "Show"}
             </button>
+            <Button size="sm" variant="ghost" className="h-10" onClick={() => setPassword("")}>Clear</Button>
           </div>
         </div>
 

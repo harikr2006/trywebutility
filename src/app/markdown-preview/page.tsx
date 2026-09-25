@@ -2,6 +2,7 @@
 import ToolShell from "@/components/shared/ToolShell";
 import CopyButton from "@/components/shared/CopyButton";
 import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 import { AlertCircle } from "lucide-react";
 import { useState, useEffect } from "react";
 import { renderMarkdown } from "@/lib/tools/markdown";
@@ -27,7 +28,10 @@ export default function MarkdownPreviewPage() {
       {/* Panels */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
-          <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Input</label>
+          <div className="flex items-center justify-between">
+            <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Input</label>
+            <Button size="sm" variant="ghost" className="h-7 text-xs" onClick={() => setInput("")}>Clear</Button>
+          </div>
           <Textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -38,7 +42,7 @@ export default function MarkdownPreviewPage() {
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Preview</label>
-            <CopyButton text={html} />
+            <CopyButton text={input} />
           </div>
           {error ? (
             <div className="flex gap-2 rounded-lg border border-destructive/40 bg-destructive/8 p-3 text-sm text-destructive font-mono min-h-[500px]">

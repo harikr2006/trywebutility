@@ -2,6 +2,7 @@
 import { useState } from "react";
 import ToolShell from "@/components/shared/ToolShell";
 import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 import { analyzeReadability } from "@/lib/tools/readability";
 import { AlertCircle } from "lucide-react";
 
@@ -29,7 +30,10 @@ export default function ReadabilityPage() {
     <ToolShell title="Readability Score" description="Analyze text with Flesch-Kincaid, Gunning Fog, and other readability formulas.">
       <div className="space-y-5">
         <div className="flex flex-col gap-2">
-          <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Text to Analyze</label>
+          <div className="flex items-center justify-between">
+            <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Text to Analyze</label>
+            <Button size="sm" variant="ghost" className="h-7 text-xs" onClick={() => setText("")}>Clear</Button>
+          </div>
           <Textarea value={text} onChange={(e) => setText(e.target.value)}
             placeholder="Paste your text here..."
             className="font-mono text-[13px] min-h-36 resize-y bg-muted/30 border-border/60 focus-visible:ring-primary/30" />

@@ -22,7 +22,14 @@ export default function RegexTesterPage() {
 
   const result = useMemo(() => {
     if (!pattern || !testString) return null;
-    return testRegex(pattern, flags, testString);
+    if (testString.length > 10_000) {
+      return { matches: [], error: "Test string is too long (max 10,000 characters). Shorten it to avoid browser hangs." };
+    }
+    try {
+      return testRegex(pattern, flags, testString);
+    } catch {
+      return { matches: [], error: "Regex evaluation failed." };
+    }
   }, [pattern, flags, testString]);
 
   function toggleFlag(flag: string) {

@@ -72,7 +72,7 @@ export default function JsonYamlPage() {
           <Textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Paste JSON → YAML hereâ€¦"
+            placeholder="Paste JSON or YAML here…"
             className="font-mono text-[13px] min-h-72 resize-y bg-muted/30 border-border/60 focus-visible:ring-primary/30"
           />
         </div>

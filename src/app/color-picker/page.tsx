@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ToolShell from "@/components/shared/ToolShell";
 import CopyButton from "@/components/shared/CopyButton";
 import { AlertCircle } from "lucide-react";
@@ -75,6 +75,11 @@ export default function ColorPickerPage() {
   const rgb = hslToRgb(hue, saturation, lightness);
   const hsl = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
   const swatchColor = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+
+  // Keep hex input in sync when sliders change
+  useEffect(() => {
+    setHexInput(hex);
+  }, [hex]);
 
   const hueGradient = `linear-gradient(to right, hsl(0,${saturation}%,${lightness}%), hsl(30,${saturation}%,${lightness}%), hsl(60,${saturation}%,${lightness}%), hsl(90,${saturation}%,${lightness}%), hsl(120,${saturation}%,${lightness}%), hsl(150,${saturation}%,${lightness}%), hsl(180,${saturation}%,${lightness}%), hsl(210,${saturation}%,${lightness}%), hsl(240,${saturation}%,${lightness}%), hsl(270,${saturation}%,${lightness}%), hsl(300,${saturation}%,${lightness}%), hsl(330,${saturation}%,${lightness}%), hsl(360,${saturation}%,${lightness}%))`;
   const satGradient = `linear-gradient(to right, hsl(${hue},0%,${lightness}%), hsl(${hue},100%,${lightness}%))`;

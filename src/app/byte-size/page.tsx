@@ -2,6 +2,7 @@
 import { useState, useMemo } from "react";
 import ToolShell from "@/components/shared/ToolShell";
 import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { calcByteSize } from "@/lib/tools/byte-size";
 
@@ -27,7 +28,10 @@ export default function ByteSizePage() {
       <div className="space-y-5">
         {/* Textarea */}
         <div className="space-y-1.5">
-          <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Input Text</label>
+          <div className="flex items-center justify-between">
+            <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Input Text</label>
+            <Button size="sm" variant="ghost" className="h-7 text-xs" onClick={() => setInput("")}>Clear</Button>
+          </div>
           <Textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}

@@ -27,6 +27,7 @@ export default function HTMLFormatterPage() {
         <div className="flex gap-2">
           <Button size="sm" variant={mode === "format" ? "default" : "outline"} onClick={() => handleProcess("format")}>Format / Beautify</Button>
           <Button size="sm" variant={mode === "minify" ? "default" : "outline"} onClick={() => handleProcess("minify")}>Minify</Button>
+          <Button size="sm" variant="ghost" className="ml-auto" onClick={() => { setInput(""); setOutput(""); setError(""); }}>Clear</Button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex flex-col gap-2">

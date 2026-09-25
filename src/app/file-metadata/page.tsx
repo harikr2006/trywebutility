@@ -254,13 +254,23 @@ export default function FileMetadataPage() {
   const [imgPreview, setImgPreview] = useState("");
   const [dragging, setDragging] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+  const [sizeError, setSizeError] = useState("");
 
   function processFile(file: File) {
+    setSizeError("");
+    const MAX_SIZE = 50 * 1024 * 1024; // 50 MB
+    if (file.size > MAX_SIZE) {
+      setSizeError(`File too large (${formatBytes(file.size)}). Maximum supported size is 50 MB.`);
+      return;
+    }
     const isImage = file.type.startsWith("image/");
     const isPdf =
       file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf");
 
     const reader = new FileReader();
+    reader.onerror = () => {
+      setSizeError("Failed to read file. Please try again.");
+    };
     reader.onload = (e) => {
       const buf = e.target?.result as ArrayBuffer;
       const bytes = new Uint8Array(buf);
@@ -312,6 +322,11 @@ export default function FileMetadataPage() {
       description="Inspect file metadata, MIME type from magic bytes, EXIF data for JPEG images, and a hex dump of the first 64 bytes."
     >
       <div className="space-y-5">
+        {sizeError && (
+          <div className="flex gap-2 rounded-lg border border-destructive/40 bg-destructive/8 p-3 text-sm text-destructive font-mono">
+            <span>{sizeError}</span>
+          </div>
+        )}
         {/* Drop zone */}
         <div
           onDragOver={(e) => { e.preventDefault(); setDragging(true); }}

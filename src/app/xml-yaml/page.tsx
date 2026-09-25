@@ -46,22 +46,23 @@ export default function XmlYamlPage() {
       <div className="space-y-4">
         {/* Direction buttons */}
         <div className="flex gap-2">
-          <Button
-            size="sm"
-            className="h-8"
-            variant={direction === "xml-to-yaml" ? "default" : "outline"}
-            onClick={() => handleConvert("xml-to-yaml")}
-          >
-            XML → YAML
-          </Button>
-          <Button
-            size="sm"
-            className="h-8"
-            variant={direction === "yaml-to-xml" ? "default" : "outline"}
-            onClick={() => handleConvert("yaml-to-xml")}
-          >
-            YAML → XML
-          </Button>
+          {(["xml-to-yaml", "yaml-to-xml"] as const).map((dir) => (
+            <Button
+              key={dir}
+              size="sm"
+              className="h-8"
+              variant={direction === dir ? "default" : "outline"}
+              onClick={() => {
+                if (dir !== direction) {
+                  setInput(""); setOutput(""); setError(null); setDirection(dir);
+                } else {
+                  handleConvert(dir);
+                }
+              }}
+            >
+              {dir === "xml-to-yaml" ? "XML → YAML" : "YAML → XML"}
+            </Button>
+          ))}
         </div>
 
         {/* Two-column layout */}

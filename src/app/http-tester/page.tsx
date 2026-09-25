@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import ToolShell from "@/components/shared/ToolShell";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -28,6 +28,7 @@ export default function HttpTesterPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [headersOpen, setHeadersOpen] = useState(false);
+  const abortRef = useRef<AbortController | null>(null);
 
   function addHeader() {
     setHeaders((prev) => [...prev, { key: "", value: "" }]);
@@ -49,8 +50,19 @@ export default function HttpTesterPage() {
     return "text-red-500";
   }
 
+  function cancelRequest() {
+    abortRef.current?.abort();
+    setLoading(false);
+    setError("Request cancelled.");
+  }
+
   async function sendRequest() {
     if (!url.trim()) return;
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+    const timeoutId = setTimeout(() => controller.abort(), 30_000);
+
     setLoading(true);
     setError(null);
     setResponse(null);
@@ -60,7 +72,7 @@ export default function HttpTesterPage() {
       if (h.key.trim()) requestHeaders[h.key.trim()] = h.value;
     }
 
-    const fetchOptions: RequestInit = { method, headers: requestHeaders };
+    const fetchOptions: RequestInit = { method, headers: requestHeaders, signal: controller.signal };
 
     if (["POST", "PUT", "PATCH"].includes(method) && body.trim()) {
       fetchOptions.body = body;
@@ -69,6 +81,7 @@ export default function HttpTesterPage() {
     const start = performance.now();
     try {
       const res = await fetch(url, fetchOptions);
+      clearTimeout(timeoutId);
       const time = Math.round(performance.now() - start);
 
       const responseHeaders: Record<string, string> = {};
@@ -92,7 +105,10 @@ export default function HttpTesterPage() {
         time,
       });
     } catch (err) {
-      if (err instanceof TypeError) {
+      clearTimeout(timeoutId);
+      if (err instanceof DOMException && err.name === "AbortError") {
+        setError("Request timed out or was cancelled.");
+      } else if (err instanceof TypeError) {
         setError(
           "Request blocked by CORS policy. The server must include Access-Control-Allow-Origin headers to allow browser requests."
         );
@@ -146,6 +162,11 @@ export default function HttpTesterPage() {
             <Send className="h-3.5 w-3.5" />
             {loading ? "Sending…" : "Send"}
           </Button>
+          {loading && (
+            <Button size="sm" variant="outline" className="h-9" onClick={cancelRequest}>
+              Cancel
+            </Button>
+          )}
         </div>
 
         <div className="rounded-lg border border-border/60">
@@ -196,7 +217,7 @@ export default function HttpTesterPage() {
         {showBody && (
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-              Request Body (JSON)
+              Request Body
             </label>
             <Textarea
               value={body}

@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import ToolShell from "@/components/shared/ToolShell";
+import CopyButton from "@/components/shared/CopyButton";
 import { Button } from "@/components/ui/button";
 
 // ─────────────────────────────────────────────────────────────
@@ -143,6 +144,7 @@ function BtcSection() {
               className="flex-1 rounded-md border border-border/60 bg-muted/30 px-3 py-1.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-primary/30 min-w-0"
               placeholder="0"
             />
+            <CopyButton text={values[unit.key]} />
             <div className="text-xs text-muted-foreground text-right w-24 shrink-0">{unit.desc}</div>
           </div>
         ))}
@@ -215,6 +217,7 @@ function EthSection() {
               className="flex-1 rounded-md border border-border/60 bg-muted/30 px-3 py-1.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-primary/30 min-w-0"
               placeholder="0"
             />
+            <CopyButton text={values[unit.key]} />
             <div className="text-xs text-muted-foreground text-right w-24 shrink-0">{unit.desc}</div>
           </div>
         ))}

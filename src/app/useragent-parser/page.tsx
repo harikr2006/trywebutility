@@ -4,7 +4,7 @@ import ToolShell from "@/components/shared/ToolShell";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Globe, Monitor, Smartphone, Bot, Cpu, Layers } from "lucide-react";
+import { Globe, Monitor, Smartphone, Bot, Cpu, Layers, AlertCircle } from "lucide-react";
 import { parseUserAgent, type UAResult } from "@/lib/tools/useragent";
 
 interface InfoCardProps {
@@ -34,12 +34,12 @@ export default function UserAgentParserPage() {
     }
   }, []);
 
-  const result: UAResult | null = useMemo(() => {
-    if (!input.trim()) return null;
+  const { result, parseError } = useMemo(() => {
+    if (!input.trim()) return { result: null, parseError: null };
     try {
-      return parseUserAgent(input);
+      return { result: parseUserAgent(input), parseError: null };
     } catch {
-      return null;
+      return { result: null, parseError: "Could not parse this User-Agent string." };
     }
   }, [input]);
 
@@ -67,6 +67,14 @@ export default function UserAgentParserPage() {
             className="font-mono text-[13px] min-h-20 resize-y bg-muted/30 border-border/60 focus-visible:ring-primary/30"
           />
         </div>
+
+        {/* Parse error */}
+        {parseError && (
+          <div className="flex gap-2 rounded-lg border border-destructive/40 bg-destructive/8 p-3 text-sm text-destructive">
+            <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
+            <span>{parseError}</span>
+          </div>
+        )}
 
         {/* Results */}
         {result && (

@@ -35,7 +35,7 @@ export default function CSSFormatterPage() {
         <Button size="sm" className="h-8" onClick={handleFormat}>
           Format
         </Button>
-        <Button size="sm" className="h-8" onClick={handleMinify}>
+        <Button size="sm" className="h-8" variant="outline" onClick={handleMinify}>
           Minify
         </Button>
         <Button size="sm" className="h-8 ml-auto" variant="ghost" onClick={handleClear}>

@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { decodeJWT, isExpired, formatUnixTime } from "@/lib/tools/jwt";
-import { AlertCircle, ShieldAlert, ShieldCheck } from "lucide-react";
+import { AlertCircle, ShieldAlert, Clock } from "lucide-react";
 
 export default function JWTDecoderPage() {
   const [input, setInput] = useState("");
@@ -101,8 +101,8 @@ export default function JWTDecoderPage() {
                     <ShieldAlert className="h-2.5 w-2.5" /> Expired
                   </Badge>
                 ) : !!decoded.payload.exp ? (
-                  <Badge className="text-[10px] h-4 px-1.5 gap-1 bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800">
-                    <ShieldCheck className="h-2.5 w-2.5" /> Valid
+                  <Badge className="text-[10px] h-4 px-1.5 gap-1 bg-blue-500/15 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-800">
+                    <Clock className="h-2.5 w-2.5" /> Not Expired
                   </Badge>
                 ) : null}
               </div>
@@ -128,6 +128,9 @@ export default function JWTDecoderPage() {
             </div>
             <p className="font-mono text-xs text-muted-foreground break-all leading-relaxed">
               {decoded.signature}
+            </p>
+            <p className="mt-2 text-[11px] text-amber-600 dark:text-amber-400">
+              ⚠ Signature not verified — this tool only decodes the token. Do not use the &quot;Not Expired&quot; badge as a trust signal.
             </p>
           </div>
         </div>

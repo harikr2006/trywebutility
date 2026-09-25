@@ -49,6 +49,11 @@ export default function PasswordGeneratorPage() {
     key: K,
     value: PasswordOptions[K]
   ) {
+    if (typeof value === "boolean" && !value) {
+      const boolKeys: (keyof PasswordOptions)[] = ["uppercase", "lowercase", "numbers", "symbols"];
+      const activeCount = boolKeys.filter((k) => options[k]).length;
+      if (activeCount <= 1) return;
+    }
     setOptions((prev) => ({ ...prev, [key]: value }));
   }
 

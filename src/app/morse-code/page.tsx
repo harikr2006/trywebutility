@@ -63,9 +63,12 @@ export default function MorseCodePage() {
 
         {/* Input */}
         <div className="space-y-1.5">
-          <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-            {mode === "encode" ? "Text Input" : "Morse Input"}
-          </label>
+          <div className="flex items-center justify-between">
+            <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+              {mode === "encode" ? "Text Input" : "Morse Input"}
+            </label>
+            <Button size="sm" variant="ghost" className="h-7 text-xs" onClick={() => setInput("")}>Clear</Button>
+          </div>
           <Textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}

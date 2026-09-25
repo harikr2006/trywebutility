@@ -3,6 +3,7 @@ import { useState } from "react";
 import ToolShell from "@/components/shared/ToolShell";
 import CopyButton from "@/components/shared/CopyButton";
 import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 import { AlertCircle } from "lucide-react";
 import { generateJSONSchema } from "@/lib/tools/json-schema";
 
@@ -22,7 +23,13 @@ export default function JSONSchemaPage() {
     <ToolShell title="JSON Schema Generator" description="Generate a JSON Schema draft from any JSON object automatically.">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
-          <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Input JSON</label>
+          <div className="flex items-center justify-between">
+            <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Input JSON</label>
+            <div className="flex items-center gap-2">
+              <CopyButton text={input} />
+              <Button size="sm" variant="ghost" className="h-7 text-xs" onClick={() => { setInput(""); setOutput(""); setError(""); }}>Clear</Button>
+            </div>
+          </div>
           <Textarea
             value={input}
             onChange={(e) => handleChange(e.target.value)}

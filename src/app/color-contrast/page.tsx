@@ -2,7 +2,7 @@
 import { useState } from "react";
 import ToolShell from "@/components/shared/ToolShell";
 import { checkContrast, hexToRgbString } from "@/lib/tools/color-contrast";
-import { CheckCircle, XCircle } from "lucide-react";
+import { CheckCircle, XCircle, AlertCircle } from "lucide-react";
 
 const PRESETS = [
   { label: "Black on White", fg: "#000000", bg: "#ffffff" },
@@ -55,6 +55,14 @@ export default function ColorContrastPage() {
             <p className="text-xs" style={{ color: fg }}>Small caption text at 12px — requires higher contrast for readability.</p>
           </div>
         </div>
+
+        {/* Hex error */}
+        {result.error && (
+          <div className="flex gap-2 rounded-lg border border-destructive/40 bg-destructive/8 p-3 text-sm text-destructive">
+            <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
+            <span>{result.error}</span>
+          </div>
+        )}
 
         {/* Ratio & level */}
         {!result.error && (

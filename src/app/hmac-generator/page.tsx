@@ -4,7 +4,7 @@ import ToolShell from "@/components/shared/ToolShell";
 import CopyButton from "@/components/shared/CopyButton";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, Eye, EyeOff } from "lucide-react";
 
 type Algorithm = "SHA-256" | "SHA-1" | "SHA-512";
 type OutputFormat = "hex" | "base64";
@@ -44,6 +44,7 @@ export default function HmacGeneratorPage() {
   const [output, setOutput] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [showSecretKey, setShowSecretKey] = useState(false);
 
   async function handleGenerate() {
     if (!message.trim()) {
@@ -91,13 +92,23 @@ export default function HmacGeneratorPage() {
           <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
             Secret Key
           </label>
-          <input
-            type="text"
-            value={secretKey}
-            onChange={(e) => setSecretKey(e.target.value)}
-            placeholder="Enter secret key..."
-            className="w-full rounded-md border border-border/60 bg-muted/30 px-3 py-2 font-mono text-[13px] outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
-          />
+          <div className="relative">
+            <input
+              type={showSecretKey ? "text" : "password"}
+              value={secretKey}
+              onChange={(e) => setSecretKey(e.target.value)}
+              placeholder="Enter secret key..."
+              className="w-full rounded-md border border-border/60 bg-muted/30 px-3 py-2 pr-10 font-mono text-[13px] outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+            />
+            <button
+              type="button"
+              onClick={() => setShowSecretKey((v) => !v)}
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+              aria-label={showSecretKey ? "Hide secret key" : "Show secret key"}
+            >
+              {showSecretKey ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
         </div>
 
         {/* Algorithm */}

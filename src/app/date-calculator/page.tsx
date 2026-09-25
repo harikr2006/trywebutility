@@ -41,7 +41,10 @@ export default function DateCalculatorPage() {
             <div className="flex gap-2 text-sm text-destructive"><AlertCircle className="h-4 w-4 shrink-0 mt-0.5" /><span>{age.error}</span></div>
           ) : (
             <div className="rounded-lg bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 px-4 py-3 space-y-1">
-              <p className="font-mono text-xl font-bold text-foreground">{age.years} yrs, {age.months} mos, {age.days} days</p>
+              <div className="flex items-center justify-between gap-2">
+                <p className="font-mono text-xl font-bold text-foreground">{age.years} yrs, {age.months} mos, {age.days} days</p>
+                <CopyButton text={`${age.years} yrs, ${age.months} mos, ${age.days} days`} />
+              </div>
               <p className="text-xs text-muted-foreground">{age.totalDays.toLocaleString()} total days</p>
             </div>
           )}
@@ -67,7 +70,10 @@ export default function DateCalculatorPage() {
             <div className="flex gap-2 text-sm text-destructive"><AlertCircle className="h-4 w-4 shrink-0 mt-0.5" /><span>{diff.error}</span></div>
           ) : (
             <div className="rounded-lg bg-violet-50 dark:bg-violet-950/40 border border-violet-200 dark:border-violet-800 px-4 py-3 space-y-1">
-              <p className="font-mono text-xl font-bold text-foreground">{diff.days.toLocaleString()} days</p>
+              <div className="flex items-center justify-between gap-2">
+                <p className="font-mono text-xl font-bold text-foreground">{diff.days.toLocaleString()} days</p>
+                <CopyButton text={`${diff.days} days`} />
+              </div>
               <p className="text-xs text-muted-foreground">{diff.weeks} weeks · {diff.months} months · {diff.years} years</p>
             </div>
           )}

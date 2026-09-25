@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import ToolShell from "@/components/shared/ToolShell";
 import { Button } from "@/components/ui/button";
 
@@ -44,6 +44,15 @@ export default function ImageCompressorPage() {
   const [images, setImages] = useState<ImageItem[]>([]);
   const [dragging, setDragging] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+  const imagesRef = useRef(images);
+  imagesRef.current = images;
+
+  // Revoke all blob URLs on unmount to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      imagesRef.current.forEach((item) => URL.revokeObjectURL(item.originalUrl));
+    };
+  }, []);
 
   async function addFiles(files: FileList) {
     const newItems: ImageItem[] = Array.from(files)

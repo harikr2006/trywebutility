@@ -3,6 +3,7 @@ import { useState, useMemo } from "react";
 import ToolShell from "@/components/shared/ToolShell";
 import CopyButton from "@/components/shared/CopyButton";
 import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 
 function detectLanguage(code: string): string {
   const firstLine = code.split("\n")[0].trim();
@@ -109,11 +110,14 @@ export default function LineCounterPage() {
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Paste Code</label>
-            {stats.language !== "—" && (
-              <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">
-                {stats.language}
-              </span>
-            )}
+            <div className="flex items-center gap-2">
+              {stats.language !== "—" && (
+                <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">
+                  {stats.language}
+                </span>
+              )}
+              <Button size="sm" variant="ghost" className="h-7 text-xs" onClick={() => setInput("")}>Clear</Button>
+            </div>
           </div>
           <Textarea
             value={input}

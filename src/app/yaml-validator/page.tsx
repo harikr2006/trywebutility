@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import ToolShell from "@/components/shared/ToolShell";
 import CopyButton from "@/components/shared/CopyButton";
 import { Textarea } from "@/components/ui/textarea";
@@ -18,7 +18,7 @@ hobbies:
 
 export default function YAMLValidatorPage() {
   const [input, setInput] = useState(SAMPLE);
-  const { valid, formatted, error } = validateYAML(input);
+  const { valid, formatted, error } = useMemo(() => validateYAML(input), [input]);
   return (
     <ToolShell title="YAML Validator" description="Validate and format YAML. All processing in your browser.">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

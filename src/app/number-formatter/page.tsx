@@ -40,7 +40,6 @@ export default function NumberFormatterPage() {
               <option value="decimal">Decimal</option>
               <option value="currency">Currency</option>
               <option value="percent">Percent</option>
-              <option value="unit">Unit</option>
             </select>
           </div>
           <div className="space-y-1.5">

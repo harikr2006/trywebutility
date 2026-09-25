@@ -68,7 +68,7 @@ export default function StringEscapePage() {
             size="sm"
             className="h-8"
             variant={mode === m.value ? "default" : "outline"}
-            onClick={() => setMode(m.value)}
+            onClick={() => { setMode(m.value); setOutput(""); setError(""); }}
           >
             {m.label}
           </Button>
