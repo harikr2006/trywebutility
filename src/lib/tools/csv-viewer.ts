@@ -8,10 +8,11 @@ export interface CSVData {
   error: string | null;
 }
 
-export function parseCSVForViewer(input: string): CSVData {
+export function parseCSVForViewer(input: string, delimiter = ","): CSVData {
   try {
     const result = Papa.parse<string[]>(input.trim(), {
       skipEmptyLines: true,
+      delimiter,
     });
     if (result.errors.length > 0 && result.data.length === 0) {
       return { headers: [], rows: [], rowCount: 0, colCount: 0, error: result.errors[0].message };

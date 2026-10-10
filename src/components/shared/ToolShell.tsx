@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { type ReactNode } from "react";
 import { Star } from "lucide-react";
-import { useFavorites } from "@/hooks/useFavorites";
+import { useFavorites, normalizePath } from "@/hooks/useFavorites";
 
 const FAQBlock = dynamic(() => import("./FAQBlock"), {
   ssr: false,
@@ -20,7 +20,7 @@ interface ToolShellProps {
 export default function ToolShell({ title, description, children }: ToolShellProps) {
   const pathname = usePathname();
   const { favorites, toggle, mounted } = useFavorites();
-  const isFav = mounted && favorites.has(pathname);
+  const isFav = mounted && favorites.has(normalizePath(pathname));
 
   return (
     <div className="flex flex-col gap-5 p-5 md:p-8 w-full">
