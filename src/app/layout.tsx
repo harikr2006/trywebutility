@@ -53,6 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <meta name="build-date" content={new Date().toISOString()} />
         {/* Prevent flash of unstyled dark/light mode — must be synchronous */}
         <script
           dangerouslySetInnerHTML={{

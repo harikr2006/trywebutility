@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "echo \"Static files already built in out/ — run npm run build:next to rebuild\"",
-    "build:next": "next build",
+    "build:next": "next build && node scripts/fix-rsc-payloads.js",
     "start": "next start",
     "lint": "eslint"
   },

@@ -43,6 +43,11 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
+  # Rewrite RSC __PAGE__ payloads: client requests flat-file path,
+  # files may live in subdirectory — try flat first, fall back to directory form
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^(.*/__next\.[^/]+)\.__PAGE__\.txt$ $1/__PAGE__.txt [L,NC]
+
   # Explicitly allow Next.js RSC payload files (prefixed with __next)
   # These must be served directly with no rewriting
   RewriteRule ^(.+/__next.*\.txt)$ $1 [L,NC]
