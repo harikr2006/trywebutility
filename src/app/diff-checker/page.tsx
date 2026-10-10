@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { buildSideBySide, calcStats, type DiffRow, type SideChar } from "@/lib/tools/diff-checker";
 import { cn } from "@/lib/utils";
+import { GitCompare, AlignLeft, Zap, ShieldCheck } from "lucide-react";
 
 function renderChars(chars: SideChar[], type: "removed" | "added") {
   const bg = type === "removed" ? "bg-red-300/60 dark:bg-red-700/50" : "bg-emerald-300/60 dark:bg-emerald-700/50";
@@ -81,8 +82,23 @@ export default function DiffCheckerPage() {
   return (
     <ToolShell
       title="Diff Checker"
-      description="Compare two texts side by side with line numbers and character-level highlighting."
+      description="Compare two texts side by side with line numbers and character-level diff highlighting. Paste any code, config, or document."
     >
+      {/* Feature badges */}
+      <div className="flex flex-wrap gap-2 mb-5">
+        {[
+          { icon: GitCompare, label: "Side-by-Side View" },
+          { icon: AlignLeft, label: "Line Numbers" },
+          { icon: Zap, label: "Character-Level Diff" },
+          { icon: ShieldCheck, label: "Runs in Browser" },
+        ].map(({ icon: Icon, label }) => (
+          <span key={label} className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-primary/8 text-primary border border-primary/20">
+            <Icon className="h-3 w-3" aria-hidden="true" />
+            {label}
+          </span>
+        ))}
+      </div>
+
       <div className="space-y-5">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-1.5">
@@ -151,6 +167,44 @@ export default function DiffCheckerPage() {
           </div>
         )}
       </div>
+
+      {/* Use cases */}
+      <section className="mt-10 pt-8 border-t border-border/60">
+        <h2 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-5">Common Use Cases</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {[
+            {
+              title: "Code review",
+              desc: "Compare an old version of a function against a refactored one to see exactly what changed — line by line and character by character.",
+              color: "border-blue-100 bg-blue-50/60 dark:bg-blue-950/20 dark:border-blue-900/30",
+              label: "text-blue-700 dark:text-blue-400",
+            },
+            {
+              title: "Config file auditing",
+              desc: "Diff two versions of a JSON, YAML, or TOML config to catch unexpected setting changes before deploying.",
+              color: "border-violet-100 bg-violet-50/60 dark:bg-violet-950/20 dark:border-violet-900/30",
+              label: "text-violet-700 dark:text-violet-400",
+            },
+            {
+              title: "Contract & document comparison",
+              desc: "Compare two versions of a legal document, README, or specification to see exactly which words, sentences, or sections changed.",
+              color: "border-emerald-100 bg-emerald-50/60 dark:bg-emerald-950/20 dark:border-emerald-900/30",
+              label: "text-emerald-700 dark:text-emerald-400",
+            },
+            {
+              title: "API response debugging",
+              desc: "Paste two API responses side by side to quickly find which fields differ between a working and broken request.",
+              color: "border-amber-100 bg-amber-50/60 dark:bg-amber-950/20 dark:border-amber-900/30",
+              label: "text-amber-700 dark:text-amber-400",
+            },
+          ].map((uc) => (
+            <div key={uc.title} className={`rounded-xl border p-4 ${uc.color}`}>
+              <p className={`font-semibold text-sm mb-1 ${uc.label}`}>{uc.title}</p>
+              <p className="text-xs text-muted-foreground leading-relaxed">{uc.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
     </ToolShell>
   );
 }

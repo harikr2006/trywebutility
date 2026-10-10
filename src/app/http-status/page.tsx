@@ -3,6 +3,7 @@ import { useState, useMemo } from "react";
 import ToolShell from "@/components/shared/ToolShell";
 import { cn } from "@/lib/utils";
 import { HTTP_STATUSES, type HttpStatus } from "@/lib/tools/http-status";
+import { BookOpen, Search, Filter, Zap } from "lucide-react";
 
 type CategoryFilter = "all" | "1xx" | "2xx" | "3xx" | "4xx" | "5xx";
 
@@ -49,7 +50,22 @@ export default function HttpStatusPage() {
   }, [search, categoryFilter]);
 
   return (
-    <ToolShell title="HTTP Status Codes" description="Browse, search, and filter all HTTP status codes with descriptions.">
+    <ToolShell title="HTTP Status Codes Reference" description="Browse, search, and filter all HTTP 1xx–5xx status codes with RFC descriptions.">
+      {/* Feature badges */}
+      <div className="flex flex-wrap gap-2 mb-6">
+        {[
+          { icon: BookOpen, label: "All 1xx–5xx Codes" },
+          { icon: Search, label: "Searchable" },
+          { icon: Filter, label: "Filter by Range" },
+          { icon: Zap, label: "Instant" },
+        ].map(({ icon: Icon, label }) => (
+          <span key={label} className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-primary/8 text-primary border border-primary/20">
+            <Icon className="h-3 w-3" aria-hidden="true" />
+            {label}
+          </span>
+        ))}
+      </div>
+
       <div className="space-y-4">
         {/* Search */}
         <input
@@ -127,6 +143,28 @@ export default function HttpStatusPage() {
           Showing {filtered.length} of {HTTP_STATUSES.length} status codes
         </p>
       </div>
+
+      {/* Status code ranges explainer */}
+      <section className="mt-10 pt-8 border-t border-border/60">
+        <h2 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-5">HTTP Status Code Ranges</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {[
+            { range: "1xx", label: "Informational", badge: "bg-blue-100 text-blue-700 dark:bg-blue-950/50 dark:text-blue-300", desc: "The request was received and is being processed. Rarely seen in practice; 101 Switching Protocols is used for WebSocket upgrades." },
+            { range: "2xx", label: "Success", badge: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300", desc: "The request succeeded. 200 OK is the most common. 201 Created is returned after a successful POST that creates a resource." },
+            { range: "3xx", label: "Redirection", badge: "bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300", desc: "The client must take additional action. 301 Moved Permanently and 302 Found are standard redirects. 304 Not Modified is used for caching." },
+            { range: "4xx", label: "Client Error", badge: "bg-orange-100 text-orange-700 dark:bg-orange-950/50 dark:text-orange-300", desc: "The request was malformed or unauthorized. 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, and 429 Too Many Requests are the most common." },
+            { range: "5xx", label: "Server Error", badge: "bg-red-100 text-red-700 dark:bg-red-950/50 dark:text-red-300", desc: "The server failed to fulfill a valid request. 500 Internal Server Error, 502 Bad Gateway, 503 Service Unavailable, and 504 Gateway Timeout are the most common." },
+          ].map((row) => (
+            <div key={row.range} className="rounded-xl border border-border/60 bg-card p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <span className={cn("font-mono text-xs font-bold px-2 py-0.5 rounded", row.badge)}>{row.range}</span>
+                <span className="font-semibold text-sm">{row.label}</span>
+              </div>
+              <p className="text-xs text-muted-foreground leading-relaxed">{row.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
     </ToolShell>
   );
 }

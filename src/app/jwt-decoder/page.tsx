@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { decodeJWT, isExpired, formatUnixTime } from "@/lib/tools/jwt";
-import { AlertCircle, ShieldAlert, Clock } from "lucide-react";
+import { AlertCircle, ShieldAlert, Clock, KeyRound, Layers, ShieldCheck, Zap } from "lucide-react";
 
 export default function JWTDecoderPage() {
   const [input, setInput] = useState("");
@@ -49,6 +49,21 @@ export default function JWTDecoderPage() {
       title="JWT Decoder"
       description="Decode and inspect JWT tokens — header, payload, and signature. No data leaves your browser."
     >
+      {/* Feature badges */}
+      <div className="flex flex-wrap gap-2 mb-5">
+        {[
+          { icon: KeyRound, label: "Header + Payload" },
+          { icon: Layers, label: "Claim Inspector" },
+          { icon: ShieldCheck, label: "Expiry Check" },
+          { icon: Zap, label: "Client-Side Only" },
+        ].map(({ icon: Icon, label }) => (
+          <span key={label} className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-primary/8 text-primary border border-primary/20">
+            <Icon className="h-3 w-3" aria-hidden="true" />
+            {label}
+          </span>
+        ))}
+      </div>
+
       <div className="flex items-center gap-2">
         <Button onClick={handleDecode} size="sm" className="h-8">Decode</Button>
         <Button onClick={handleClear} size="sm" variant="ghost" className="h-8 text-muted-foreground">Clear</Button>
@@ -135,6 +150,63 @@ export default function JWTDecoderPage() {
           </div>
         </div>
       )}
+
+      {/* JWT Claims Reference */}
+      <section className="mt-10 pt-8 border-t border-border/60">
+        <h2 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-5">Standard JWT Claims Reference</h2>
+        <div className="rounded-xl border border-border/60 overflow-hidden">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="bg-muted/40 border-b border-border/60">
+                <th className="px-4 py-2.5 text-left font-semibold text-foreground w-20">Claim</th>
+                <th className="px-4 py-2.5 text-left font-semibold text-foreground w-36">Name</th>
+                <th className="px-4 py-2.5 text-left font-semibold text-foreground">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { claim: "iss", name: "Issuer", desc: "Who issued the token — typically the authentication server URL." },
+                { claim: "sub", name: "Subject", desc: "Who the token is about — usually a user ID or email." },
+                { claim: "aud", name: "Audience", desc: "Who the token is intended for — the API or client that should accept it." },
+                { claim: "exp", name: "Expiration", desc: "Unix timestamp after which the token must not be accepted." },
+                { claim: "nbf", name: "Not Before", desc: "Unix timestamp before which the token must not be accepted." },
+                { claim: "iat", name: "Issued At", desc: "Unix timestamp when the token was issued." },
+                { claim: "jti", name: "JWT ID", desc: "A unique identifier for the token — used to prevent replay attacks." },
+              ].map((row) => (
+                <tr key={row.claim} className="border-b border-border/40 last:border-0">
+                  <td className="px-4 py-2.5 font-mono text-xs font-bold text-primary">{row.claim}</td>
+                  <td className="px-4 py-2.5 font-medium text-sm">{row.name}</td>
+                  <td className="px-4 py-2.5 text-sm text-muted-foreground">{row.desc}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* What is JWT */}
+      <section className="mt-10 pt-8 border-t border-border/60">
+        <h2 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4">What is a JWT?</h2>
+        <div className="space-y-3 text-sm text-muted-foreground leading-relaxed max-w-2xl">
+          <p>
+            A <strong className="text-foreground">JSON Web Token (JWT)</strong> is a compact, URL-safe token format
+            defined by RFC 7519. It consists of three Base64URL-encoded parts separated by dots:{" "}
+            <code className="font-mono text-xs bg-muted px-1 rounded">header.payload.signature</code>.
+          </p>
+          <p>
+            The <strong className="text-foreground">header</strong> contains the token type and signing algorithm
+            (e.g. <code className="font-mono text-xs bg-muted px-1 rounded">HS256</code> or{" "}
+            <code className="font-mono text-xs bg-muted px-1 rounded">RS256</code>). The{" "}
+            <strong className="text-foreground">payload</strong> contains claims — assertions about the user
+            or session. The <strong className="text-foreground">signature</strong> verifies the token was
+            issued by a trusted party and has not been tampered with.
+          </p>
+          <p className="text-amber-600 dark:text-amber-400 text-xs">
+            This decoder reads the header and payload without verifying the signature — it is for inspection
+            and debugging only. Never trust a JWT claim without server-side signature verification.
+          </p>
+        </div>
+      </section>
     </ToolShell>
   );
 }

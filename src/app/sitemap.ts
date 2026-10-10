@@ -4,7 +4,7 @@ import { tools } from "@/lib/tools-registry";
 export const dynamic = "force-static";
 
 const BASE = "https://trywebutility.com";
-const LAST_UPDATED = new Date("2026-09-25");
+const LAST_UPDATED = new Date("2026-10-10");
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const toolEntries: MetadataRoute.Sitemap = tools.map((tool) => ({
@@ -27,6 +27,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.9,
     },
+    // Category landing pages
+    { url: `${BASE}/formatters/`, lastModified: LAST_UPDATED, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${BASE}/encoders/`, lastModified: LAST_UPDATED, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${BASE}/converters/`, lastModified: LAST_UPDATED, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${BASE}/generators/`, lastModified: LAST_UPDATED, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${BASE}/testers/`, lastModified: LAST_UPDATED, changeFrequency: "weekly", priority: 0.9 },
     ...toolEntries,
   ];
 }
