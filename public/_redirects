@@ -1,0 +1,2 @@
+# www → non-www canonical redirect (Netlify / Cloudflare Pages)
+https://www.trywebutility.com/* https://trywebutility.com/:splat 301!

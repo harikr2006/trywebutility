@@ -224,10 +224,10 @@ const toolMetadataMap: Record<string, ToolSEO> = {
     keywords: ["toml to json converter", "json to toml converter", "convert toml json online", "toml json tool"],
   },
   "timezone-converter": {
-    title: "Timezone Converter Online — Convert Any IANA Zone",
+    title: "Time Zone Converter Online — Convert Any City or IANA Zone",
     description:
-      "Free online timezone converter. Convert a date and time between any two IANA timezones instantly. Supports daylight saving time. No login required.",
-    keywords: ["timezone converter online", "convert timezone online", "iana timezone converter", "time zone tool"],
+      "Convert time between New York and London, IST and PST, or any 400+ IANA timezone pair. Handles daylight saving time automatically. Free, instant, runs in your browser — no sign-up needed.",
+    keywords: ["time zone converter online", "timezone converter", "convert time zones online", "iana timezone converter", "utc offset converter", "dst aware time converter"],
   },
   "html-to-jsx": {
     title: "Convert HTML to React JSX Online — Free Tool",
@@ -530,10 +530,10 @@ const toolMetadataMap: Record<string, ToolSEO> = {
     keywords: ["chmod calculator online", "unix permissions calculator", "chmod number converter", "linux file permissions tool"],
   },
   "semver": {
-    title: "Semver Analyzer Online — Parse & Validate Versions",
+    title: "Semver Validator & Analyzer Online — Parse npm Version Strings",
     description:
-      "Free online semantic versioning analyzer. Parse, compare, validate, and sort semver strings (major.minor.patch). Check ranges and pre-release identifiers. No login.",
-    keywords: ["semver analyzer", "semantic version validator", "semver parser online", "version comparison tool", "semver checker"],
+      "Instantly parse any npm, Python, or GitHub semver string into MAJOR.MINOR.PATCH. Validate pre-release tags, compare two versions, and check SemVer 2.0 compliance. Free, browser-only, no login.",
+    keywords: ["semver validator", "semver checker online", "semantic version parser", "npm version validator", "semver compare online", "version string validator"],
   },
   "line-sorter": {
     title: "Line Sorter Online — Sort, Deduplicate & Shuffle",
@@ -590,10 +590,10 @@ const toolMetadataMap: Record<string, ToolSEO> = {
     keywords: ["color contrast checker", "wcag contrast checker", "accessibility contrast tool", "aa aaa contrast ratio", "color accessibility"],
   },
   "number-formatter": {
-    title: "Number Formatter Online — Currency & Locale Format",
+    title: "Number Formatter Online — Locale & Currency Formatting",
     description:
-      "Free online number formatter. Format numbers with locale-specific separators, currency symbols, and decimal precision. Supports all IANA locales. Runs in your browser.",
-    keywords: ["number formatter online", "currency formatter", "locale number format", "number format tool", "decimal formatter"],
+      "Format 1,234,567.89 for any country or currency — EUR, GBP, INR, JPY, and 50+ locales. Instant locale-aware number formatting with thousands separators, decimal places, compact notation, and currency symbols. Free, browser-only.",
+    keywords: ["number formatter online", "locale number format", "currency formatter online", "intl number format", "format number by country", "decimal separator converter"],
   },
   "env-parser": {
     title: ".env File Parser Online — Extract Key-Value Pairs",

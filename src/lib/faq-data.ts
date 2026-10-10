@@ -427,6 +427,18 @@ export const faqData: Record<string, FAQ[]> = {
       q: "What is Semantic Versioning?",
       a: "SemVer is a versioning scheme using three numbers MAJOR.MINOR.PATCH. Breaking changes bump MAJOR, new backwards-compatible features bump MINOR, and bug fixes bump PATCH.",
     },
+    {
+      q: "What does a pre-release identifier mean in semver?",
+      a: "Pre-release versions are denoted with a hyphen after the patch number, e.g. 1.0.0-alpha.1 or 2.3.0-rc.2. They indicate the version is not yet stable. In precedence, 1.0.0-alpha < 1.0.0.",
+    },
+    {
+      q: "Does this tool support npm semver ranges like ^1.2 or ~2.0?",
+      a: "The validator checks individual version strings for SemVer 2.0 compliance and compares exact versions. Range syntax (^, ~, >=) used in package.json is not parsed — for range evaluation use the npm semver package.",
+    },
+    {
+      q: "Is 1.0 a valid semver string?",
+      a: "No. SemVer 2.0 requires all three numbers: MAJOR, MINOR, and PATCH. A string like 1.0 or 2 is not valid semver — it must be at least 1.0.0.",
+    },
   ],
   "/line-sorter": [
     {
@@ -476,6 +488,28 @@ export const faqData: Record<string, FAQ[]> = {
       a: "All 128 standard ASCII characters with their decimal, hexadecimal, binary values, and HTML entity (where applicable).",
     },
   ],
+  "/timezone-converter": [
+    {
+      q: "What is an IANA timezone?",
+      a: "An IANA timezone (like America/New_York or Asia/Kolkata) is a named region in the official timezone database that encodes all historical and future DST rules. Using IANA names instead of UTC offsets ensures correct conversions even when daylight saving time changes.",
+    },
+    {
+      q: "Does this converter handle daylight saving time?",
+      a: "Yes. The converter uses the browser's Intl.DateTimeFormat API, which automatically applies DST rules for any IANA timezone. If you enter a date during DST, the offset is adjusted accordingly — for example New York is UTC-5 in winter but UTC-4 in summer.",
+    },
+    {
+      q: "How do I convert New York time to India time?",
+      a: "Select America/New_York as the From timezone and Asia/Kolkata as the To timezone. India Standard Time (IST) is UTC+5:30, so New York (EST, UTC-5) is 10 hours and 30 minutes behind IST in winter, and 9 hours 30 minutes behind during EDT (UTC-4) in summer.",
+    },
+    {
+      q: "Can I convert UTC to a local timezone?",
+      a: "Yes. Set From to UTC and To to your local IANA zone (e.g. Europe/London, America/Los_Angeles). Enter the UTC time and click Convert to see the local equivalent.",
+    },
+    {
+      q: "Is my date and time data sent to a server?",
+      a: "No. All conversion logic runs entirely in your browser using the Intl API. No data is sent to any server.",
+    },
+  ],
   "/color-contrast": [
     {
       q: "What WCAG levels does the contrast checker test?",
@@ -489,7 +523,19 @@ export const faqData: Record<string, FAQ[]> = {
   "/number-formatter": [
     {
       q: "What formatting options are available?",
-      a: "Locale-aware thousand separators, decimal places, prefix/suffix, and currency formatting using the browser's Intl.NumberFormat API.",
+      a: "Locale-aware thousand separators, decimal places, currency symbols, compact notation (1.2M), scientific notation, engineering notation, and percent style — all using the browser's Intl.NumberFormat API.",
+    },
+    {
+      q: "Why does India use a different thousands separator pattern?",
+      a: "The en-IN locale uses the Indian numbering system where the first group is 3 digits and subsequent groups are 2 digits: 12,34,567.89 instead of 1,234,567.89. This matches the lakh and crore system.",
+    },
+    {
+      q: "What is compact notation?",
+      a: "Compact notation shortens large numbers: 1,200,000 becomes 1.2M and 1,500,000,000 becomes 1.5B. It's useful for dashboards, charts, and anywhere space is limited.",
+    },
+    {
+      q: "Can I format a number as a percentage?",
+      a: "Yes. Set the Style to Percent and enter a decimal value — for example 0.85 will output 85%. The Intl API multiplies by 100 and adds the locale's percent symbol automatically.",
     },
   ],
   "/markdown-html-table": [
