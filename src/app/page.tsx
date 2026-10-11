@@ -386,7 +386,7 @@ function ToolCard({
           {otherTags.map((tag) => (
             <span
               key={tag}
-              className={cn("text-[10px] font-medium px-1.5 py-0.5 rounded-md", meta.pill)}
+              className={cn("font-mono text-[10px] font-bold uppercase tracking-wide rounded px-1.5 py-px", meta.pill)}
             >
               {tag}
             </span>
