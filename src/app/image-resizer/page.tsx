@@ -151,7 +151,18 @@ export default function ImageResizerPage() {
           <div className="space-y-4">
             <div className="flex items-end gap-3">
               <div className="flex-1 space-y-1">
-                <label className="text-sm font-medium">Width (px)</label>
+                <div className="flex items-center justify-between">
+                  <label className="text-sm font-medium">Width (px)</label>
+                  {(width !== origWidth || height !== origHeight) && (
+                    <button
+                      type="button"
+                      onClick={() => { setWidth(origWidth); setHeight(origHeight); }}
+                      className="text-xs text-muted-foreground hover:text-primary transition-colors"
+                    >
+                      Reset to original
+                    </button>
+                  )}
+                </div>
                 <input
                   type="number"
                   min={1}

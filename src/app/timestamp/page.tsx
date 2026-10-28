@@ -116,10 +116,9 @@ export default function TimestampPage() {
           <h2 className="text-sm font-semibold">Date → Unix</h2>
           <div className="flex gap-2">
             <input
-              type="text"
+              type="datetime-local"
               value={dateInput}
               onChange={(e) => setDateInput(e.target.value)}
-              placeholder="2024-01-15 14:30:00"
               className="flex-1 h-9 rounded-md border border-border/60 bg-background px-3 font-mono text-sm focus:ring-2 focus:ring-primary/30 focus:outline-none"
             />
             <Button size="sm" className="h-9" onClick={convertDateToUnix}>Convert</Button>

@@ -15,10 +15,14 @@ const ALL_FLAGS = [
   { flag: "s", label: "s", title: "dotAll" },
 ];
 
+type Tab = "match" | "replace";
+
 export default function RegexTesterPage() {
   const [pattern, setPattern] = useState("");
   const [flags, setFlags] = useState("g");
   const [testString, setTestString] = useState("");
+  const [tab, setTab] = useState<Tab>("match");
+  const [replacement, setReplacement] = useState("");
 
   const result = useMemo(() => {
     if (!pattern || !testString) return null;
@@ -31,6 +35,35 @@ export default function RegexTesterPage() {
       return { matches: [], error: "Regex evaluation failed." };
     }
   }, [pattern, flags, testString]);
+
+  // Determine if any match has named or indexed capture groups
+  const hasGroups = useMemo(() => {
+    if (!result || result.error) return false;
+    return result.matches.some(
+      (m) => m.groups && Object.keys(m.groups).length > 0
+    );
+  }, [result]);
+
+  // All unique group names across all matches
+  const groupNames = useMemo(() => {
+    if (!result || !hasGroups) return [];
+    const names = new Set<string>();
+    result.matches.forEach((m) => {
+      if (m.groups) Object.keys(m.groups).forEach((k) => names.add(k));
+    });
+    return Array.from(names);
+  }, [result, hasGroups]);
+
+  // Replace mode result
+  const replaceResult = useMemo(() => {
+    if (!pattern || !testString || tab !== "replace") return null;
+    try {
+      const re = new RegExp(pattern, flags);
+      return testString.replace(re, replacement);
+    } catch (e) {
+      return `Error: ${(e as Error).message}`;
+    }
+  }, [pattern, flags, testString, replacement, tab]);
 
   function toggleFlag(flag: string) {
     setFlags((prev) =>
@@ -99,8 +132,26 @@ export default function RegexTesterPage() {
         />
       </div>
 
-      {/* Results */}
-      {result && (
+      {/* Mode tabs */}
+      <div className="flex gap-1 border-b border-border/60">
+        {(["match", "replace"] as Tab[]).map((t) => (
+          <button
+            key={t}
+            onClick={() => setTab(t)}
+            className={cn(
+              "px-4 py-2 text-sm font-medium capitalize border-b-2 -mb-px transition-colors",
+              tab === t
+                ? "border-primary text-primary"
+                : "border-transparent text-muted-foreground hover:text-foreground"
+            )}
+          >
+            {t}
+          </button>
+        ))}
+      </div>
+
+      {/* Match tab results */}
+      {tab === "match" && result && (
         <div className="flex flex-col gap-3">
           {result.error ? (
             <div className="flex gap-2 rounded-lg border border-destructive/40 bg-destructive/8 p-3 text-sm text-destructive font-mono">
@@ -143,6 +194,11 @@ export default function RegexTesterPage() {
                         <th className="text-left px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-muted-foreground w-10">#</th>
                         <th className="text-left px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Match</th>
                         <th className="text-left px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-muted-foreground w-20">Index</th>
+                        {hasGroups && groupNames.map((name) => (
+                          <th key={name} className="text-left px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                            Group: {name}
+                          </th>
+                        ))}
                       </tr>
                     </thead>
                     <tbody>
@@ -155,6 +211,11 @@ export default function RegexTesterPage() {
                             </span>
                           </td>
                           <td className="px-4 py-2 text-xs text-muted-foreground font-mono">{m.index}</td>
+                          {hasGroups && groupNames.map((name) => (
+                            <td key={name} className="px-4 py-2 font-mono text-xs text-muted-foreground">
+                              {m.groups?.[name] ?? <em className="not-italic opacity-40">—</em>}
+                            </td>
+                          ))}
                         </tr>
                       ))}
                     </tbody>
@@ -162,6 +223,34 @@ export default function RegexTesterPage() {
                 </div>
               )}
             </>
+          )}
+        </div>
+      )}
+
+      {/* Replace tab */}
+      {tab === "replace" && (
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-2">
+            <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Replacement</label>
+            <input
+              type="text"
+              className="font-mono text-[13px] h-9 rounded-lg border border-border/60 bg-muted/30 px-3 focus:outline-none focus:ring-2 focus:ring-primary/30"
+              placeholder="Replacement string (use $1, $2 for groups)"
+              value={replacement}
+              onChange={(e) => setReplacement(e.target.value)}
+              spellCheck={false}
+            />
+            <p className="text-xs text-muted-foreground">Use <code className="font-mono bg-muted px-1 rounded text-[11px]">$1</code>, <code className="font-mono bg-muted px-1 rounded text-[11px]">$2</code> for capture groups, <code className="font-mono bg-muted px-1 rounded text-[11px]">$&amp;</code> for full match.</p>
+          </div>
+          {replaceResult !== null && (
+            <div className="rounded-xl border bg-card p-4">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-2">
+                Result
+              </p>
+              <pre className="font-mono text-[13px] whitespace-pre-wrap break-words leading-relaxed">
+                {replaceResult}
+              </pre>
+            </div>
           )}
         </div>
       )}

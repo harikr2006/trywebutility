@@ -4,6 +4,7 @@ export interface PasswordOptions {
   lowercase: boolean;
   numbers: boolean;
   symbols: boolean;
+  excludeAmbiguous?: boolean;
 }
 
 const UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -11,27 +12,38 @@ const LOWERCASE = "abcdefghijklmnopqrstuvwxyz";
 const NUMBERS = "0123456789";
 const SYMBOLS = "!@#$%^&*()_+-=[]{}|;':\",./<>?";
 
+const AMBIGUOUS_CHARS = new Set(["l", "1", "I", "O", "0"]);
+
 export function generatePassword(options: PasswordOptions): string {
-  const { length, uppercase, lowercase, numbers, symbols } = options;
+  const { length, uppercase, lowercase, numbers, symbols, excludeAmbiguous } = options;
+
+  function filterAmbiguous(s: string): string {
+    if (!excludeAmbiguous) return s;
+    return s.split("").filter((c) => !AMBIGUOUS_CHARS.has(c)).join("");
+  }
 
   let charset = "";
   const required: string[] = [];
 
   if (uppercase) {
-    charset += UPPERCASE;
-    required.push(UPPERCASE[Math.floor(Math.random() * UPPERCASE.length)]);
+    const pool = filterAmbiguous(UPPERCASE);
+    charset += pool;
+    required.push(pool[Math.floor(Math.random() * pool.length)]);
   }
   if (lowercase) {
-    charset += LOWERCASE;
-    required.push(LOWERCASE[Math.floor(Math.random() * LOWERCASE.length)]);
+    const pool = filterAmbiguous(LOWERCASE);
+    charset += pool;
+    required.push(pool[Math.floor(Math.random() * pool.length)]);
   }
   if (numbers) {
-    charset += NUMBERS;
-    required.push(NUMBERS[Math.floor(Math.random() * NUMBERS.length)]);
+    const pool = filterAmbiguous(NUMBERS);
+    charset += pool;
+    required.push(pool[Math.floor(Math.random() * pool.length)]);
   }
   if (symbols) {
-    charset += SYMBOLS;
-    required.push(SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)]);
+    const pool = filterAmbiguous(SYMBOLS);
+    charset += pool;
+    required.push(pool[Math.floor(Math.random() * pool.length)]);
   }
 
   if (!charset) {

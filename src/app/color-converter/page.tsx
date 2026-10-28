@@ -21,10 +21,14 @@ export default function ColorConverterPage() {
   const hasError = result && !!result.error;
   const hasResult = result && !!result.result;
 
+  function handleSwatchChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setInputValue(e.target.value);
+  }
+
   return (
     <ToolShell
       title="Color Converter"
-      description="Convert colors between HEX, RGB, and HSL formats instantly."
+      description="Convert colors between HEX, RGB, HSL, HSV, and CMYK formats instantly."
     >
       <div className="flex flex-col gap-4 max-w-xl">
         <div className="flex flex-col gap-2">
@@ -34,13 +38,30 @@ export default function ColorConverterPage() {
             </label>
             <Button size="sm" variant="ghost" className="h-7 text-xs" onClick={() => setInputValue("")}>Clear</Button>
           </div>
-          <input
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder="#3b82f6 or rgb(59,130,246) or hsl(217,91%,60%)"
-            className="h-10 rounded-lg border border-border/60 bg-background px-3 text-sm font-mono focus:ring-2 focus:ring-primary/30 focus:outline-none w-full"
-          />
+          <div className="flex gap-2 items-center">
+            {/* Color swatch picker */}
+            <div className="relative shrink-0">
+              <div
+                className="w-10 h-10 rounded-lg border border-border/60 cursor-pointer overflow-hidden"
+                style={{ backgroundColor: hasResult ? result!.result!.hex : "#3b82f6" }}
+              >
+                <input
+                  type="color"
+                  value={hasResult ? result!.result!.hex : "#3b82f6"}
+                  onChange={handleSwatchChange}
+                  className="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
+                  title="Pick a color"
+                />
+              </div>
+            </div>
+            <input
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              placeholder="#3b82f6 or rgb(59,130,246) or hsl(217,91%,60%)"
+              className="flex-1 h-10 rounded-lg border border-border/60 bg-background px-3 text-sm font-mono focus:ring-2 focus:ring-primary/30 focus:outline-none"
+            />
+          </div>
         </div>
 
         {hasError && (
@@ -63,6 +84,8 @@ export default function ColorConverterPage() {
                   { label: "HEX", value: r.hex },
                   { label: "RGB", value: r.rgb },
                   { label: "HSL", value: r.hsl },
+                  { label: "HSV", value: r.hsv },
+                  { label: "CMYK", value: r.cmyk },
                 ].map(({ label, value }) => (
                   <div
                     key={label}
@@ -88,4 +111,3 @@ export default function ColorConverterPage() {
     </ToolShell>
   );
 }
-

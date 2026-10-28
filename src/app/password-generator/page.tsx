@@ -24,6 +24,7 @@ const DEFAULT_OPTIONS: PasswordOptions = {
   lowercase: true,
   numbers: true,
   symbols: false,
+  excludeAmbiguous: false,
 };
 
 export default function PasswordGeneratorPage() {
@@ -49,9 +50,9 @@ export default function PasswordGeneratorPage() {
     key: K,
     value: PasswordOptions[K]
   ) {
-    if (typeof value === "boolean" && !value) {
-      const boolKeys: (keyof PasswordOptions)[] = ["uppercase", "lowercase", "numbers", "symbols"];
-      const activeCount = boolKeys.filter((k) => options[k]).length;
+    const charsetKeys: (keyof PasswordOptions)[] = ["uppercase", "lowercase", "numbers", "symbols"];
+    if (typeof value === "boolean" && !value && charsetKeys.includes(key)) {
+      const activeCount = charsetKeys.filter((k) => options[k]).length;
       if (activeCount <= 1) return;
     }
     setOptions((prev) => ({ ...prev, [key]: value }));
@@ -127,13 +128,14 @@ export default function PasswordGeneratorPage() {
           <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
             Character Sets
           </label>
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
             {(
               [
                 { key: "uppercase", label: "Uppercase (A-Z)" },
                 { key: "lowercase", label: "Lowercase (a-z)" },
                 { key: "numbers", label: "Numbers (0-9)" },
                 { key: "symbols", label: "Symbols (!@#...)" },
+                { key: "excludeAmbiguous", label: "Exclude ambiguous (l, 1, I, O, 0)" },
               ] as { key: keyof PasswordOptions; label: string }[]
             ).map(({ key, label }) => (
               <label

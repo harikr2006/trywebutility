@@ -1,9 +1,9 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ToolShell from "@/components/shared/ToolShell";
 import { Button } from "@/components/ui/button";
 import { AlertCircle } from "lucide-react";
-import { generateQRDataURL } from "@/lib/tools/qrcode-gen";
+import { generateQRDataURL, generateQRSVG } from "@/lib/tools/qrcode-gen";
 
 const SIZE_OPTIONS = [200, 300, 400];
 
@@ -13,6 +13,7 @@ export default function QRCodePage() {
   const [error, setError] = useState<string | null>(null);
   const [size, setSize] = useState(300);
   const [loading, setLoading] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   async function handleGenerate(text: string = input, qrSize: number = size) {
     if (!text.trim()) {
@@ -31,15 +32,35 @@ export default function QRCodePage() {
     }
   }
 
+  // Live update: debounced on input or size change
   useEffect(() => {
-    handleGenerate(input, size);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      handleGenerate(input, size);
+    }, 400);
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [input, size]);
+
+  async function handleDownloadSVG() {
+    if (!input.trim()) return;
+    const { svg, error: svgErr } = await generateQRSVG(input);
+    if (svgErr || !svg) { setError(svgErr ?? "Failed to generate SVG"); return; }
+    const blob = new Blob([svg], { type: "image/svg+xml" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "qrcode.svg";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
 
   return (
     <ToolShell
       title="QR Code Generator"
-      description="Convert any URL or text into a scannable QR code. Download as PNG."
+      description="Convert any URL or text into a scannable QR code. Updates live as you type. Download as PNG or SVG."
     >
       <div className="space-y-4">
         {/* Text input */}
@@ -53,7 +74,6 @@ export default function QRCodePage() {
             onChange={(e) => setInput(e.target.value)}
             placeholder="Enter URL or text..."
             className="w-full h-9 rounded-md border border-border/60 bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
-            onKeyDown={(e) => e.key === "Enter" && handleGenerate()}
           />
         </div>
 
@@ -70,7 +90,7 @@ export default function QRCodePage() {
                   size="sm"
                   className="h-8"
                   variant={size === s ? "default" : "outline"}
-                  onClick={() => { setSize(s); handleGenerate(input, s); }}
+                  onClick={() => setSize(s)}
                 >
                   {s}px
                 </Button>
@@ -107,12 +127,15 @@ export default function QRCodePage() {
                 className="rounded-lg border p-4 bg-white"
               />
             </div>
-            <div className="flex justify-center">
+            <div className="flex justify-center gap-2">
               <a href={dataUrl} download="qrcode.png">
                 <Button variant="outline" size="sm">
                   Download PNG
                 </Button>
               </a>
+              <Button variant="outline" size="sm" onClick={handleDownloadSVG}>
+                Download SVG
+              </Button>
             </div>
           </div>
         )}

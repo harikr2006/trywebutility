@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ToolShell from "@/components/shared/ToolShell";
 import CopyButton from "@/components/shared/CopyButton";
 import { Textarea } from "@/components/ui/textarea";
@@ -23,6 +23,15 @@ export default function JWTDecoderPage() {
     setDecoded(data);
     setError(err);
   }
+
+  // Auto-decode when input looks like a JWT
+  useEffect(() => {
+    const trimmed = input.trim();
+    if (/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]*$/.test(trimmed)) {
+      handleDecode();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [input]);
 
   function handleClear() {
     setInput("");

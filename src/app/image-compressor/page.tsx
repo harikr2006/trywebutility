@@ -31,9 +31,7 @@ function compressImageFile(item: ImageItem, quality: number): Promise<Blob | nul
       const ctx = canvas.getContext("2d");
       if (!ctx) { resolve(null); return; }
       ctx.drawImage(img, 0, 0);
-      // PNG → WebP for actual compression; JPEG/WebP use native format
-      const outType = item.file.type === "image/png" ? "image/webp" : item.file.type;
-      canvas.toBlob((blob) => resolve(blob), outType, quality / 100);
+      canvas.toBlob((blob) => resolve(blob), item.outputType, quality / 100);
     };
     img.onerror = () => resolve(null);
     img.src = item.originalUrl;
@@ -84,6 +82,26 @@ export default function ImageCompressorPage() {
     }
   }
 
+  async function updateOutputType(id: string, outputType: string) {
+    setImages((prev) =>
+      prev.map((i) => (i.id === id ? { ...i, outputType, compressing: true } : i))
+    );
+    setImages((prev) => {
+      const item = prev.find((i) => i.id === id);
+      if (!item) return prev;
+      compressImageFile({ ...item, outputType }, item.quality).then((blob) => {
+        setImages((curr) =>
+          curr.map((i) =>
+            i.id === id
+              ? { ...i, compressedBlob: blob, compressedSize: blob?.size ?? 0, compressing: false }
+              : i
+          )
+        );
+      });
+      return prev;
+    });
+  }
+
   async function updateQuality(id: string, quality: number) {
     setImages((prev) =>
       prev.map((i) => (i.id === id ? { ...i, quality, compressing: true } : i))
@@ -107,7 +125,8 @@ export default function ImageCompressorPage() {
 
   function downloadOne(item: ImageItem) {
     if (!item.compressedBlob) return;
-    const ext = item.outputType.split("/")[1];
+    const rawExt = item.outputType.split("/")[1];
+    const ext = rawExt === "jpeg" ? "jpg" : rawExt;
     const baseName = item.file.name.replace(/\.[^.]+$/, "");
     const url = URL.createObjectURL(item.compressedBlob);
     const a = document.createElement("a");
@@ -265,6 +284,31 @@ export default function ImageCompressorPage() {
                           onChange={(e) => updateQuality(item.id, Number(e.target.value))}
                           className="flex-1 accent-primary"
                         />
+                      </div>
+
+                      {/* Output format toggle */}
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-muted-foreground whitespace-nowrap w-24">Format:</span>
+                        <div className="flex gap-1">
+                          {[
+                            { label: "WebP", value: "image/webp" },
+                            { label: "JPEG", value: "image/jpeg" },
+                            { label: "PNG", value: "image/png" },
+                          ].map((fmt) => (
+                            <button
+                              key={fmt.value}
+                              type="button"
+                              onClick={() => updateOutputType(item.id, fmt.value)}
+                              className={`px-2.5 py-1 rounded-md border text-xs font-medium transition-colors ${
+                                item.outputType === fmt.value
+                                  ? "bg-primary text-primary-foreground border-primary"
+                                  : "bg-background hover:bg-muted border-muted-foreground/30 text-foreground"
+                              }`}
+                            >
+                              {fmt.label}
+                            </button>
+                          ))}
+                        </div>
                       </div>
                     </div>
 
