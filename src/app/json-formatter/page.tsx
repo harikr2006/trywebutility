@@ -19,11 +19,17 @@ export default function JSONFormatterPage() {
   const [fileName, setFileName] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  function handleFormat() {
-    const { output: out, error: err } = formatJSON(input, indent);
+  const hasInput = input.trim().length > 0;
+
+  function runFormat(text: string, spaces: number) {
+    const { output: out, error: err } = formatJSON(text, spaces);
     setOutput(out);
     setError(err);
     setValid(err ? false : true);
+  }
+
+  function handleFormat() {
+    runFormat(input, indent);
   }
 
   function handleMinify() {
@@ -48,19 +54,25 @@ export default function JSONFormatterPage() {
     setFileName(null);
   }
 
-  function loadFile(file: File) {
-    if (!file) return;
-    setFileName(file.name);
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const text = e.target?.result as string;
-      setInput(text);
-      setOutput("");
-      setError(null);
-      setValid(null);
-    };
-    reader.readAsText(file, "UTF-8");
-  }
+  // A picked or dropped file carries an unambiguous intent, so format it right away
+  // instead of making the user look for the button.
+  const loadFile = useCallback(
+    (file: File) => {
+      if (!file) return;
+      setFileName(file.name);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const text = e.target?.result as string;
+        setInput(text);
+        const { output: out, error: err } = formatJSON(text, indent);
+        setOutput(out);
+        setError(err);
+        setValid(err ? false : true);
+      };
+      reader.readAsText(file, "UTF-8");
+    },
+    [indent]
+  );
 
   function handleFileInput(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -79,12 +91,15 @@ export default function JSONFormatterPage() {
     }
   }, []);
 
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-    const file = e.dataTransfer.files?.[0];
-    if (file) loadFile(file);
-  }, []);
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      setIsDragging(false);
+      const file = e.dataTransfer.files?.[0];
+      if (file) loadFile(file);
+    },
+    [loadFile]
+  );
 
   function handleDownload() {
     if (!output) return;
@@ -104,48 +119,8 @@ export default function JSONFormatterPage() {
       title="JSON Formatter"
       description="Format, validate, and minify JSON. Upload a file or paste — all processing happens in your browser."
     >
-      {/* Toolbar */}
-      <div className="flex items-center gap-2 flex-wrap">
-        <Button onClick={handleFormat} size="sm" className="h-8">Format</Button>
-        <Button onClick={handleMinify} size="sm" variant="outline" className="h-8">Minify</Button>
-        <Button onClick={handleValidate} size="sm" variant="outline" className="h-8">Validate</Button>
-
-        <div className="flex items-center gap-1 ml-2">
-          <span className="text-xs text-muted-foreground mr-1">Indent</span>
-          {[2, 4].map((n) => (
-            <Button
-              key={n}
-              size="sm"
-              variant={indent === n ? "default" : "outline"}
-              className="h-7 w-7 p-0 text-xs"
-              onClick={() => {
-                setIndent(n);
-                if (input) {
-                  const { output: out, error: err } = formatJSON(input, n);
-                  setOutput(out); setError(err); setValid(err ? false : true);
-                }
-              }}
-            >
-              {n}
-            </Button>
-          ))}
-        </div>
-
-        <Button onClick={handleClear} size="sm" variant="ghost" className="h-8 ml-auto text-muted-foreground">
-          Clear
-        </Button>
-      </div>
-
-      {/* Status bar */}
-      {valid !== null && !error && (
-        <div className="flex items-center gap-2 text-sm text-emerald-600 dark:text-emerald-400">
-          <CheckCircle2 className="h-4 w-4" />
-          Valid JSON
-        </div>
-      )}
-
       {/* Editor panels */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:items-start">
 
         {/* ── Input panel ── */}
         <div className="flex flex-col gap-2">
@@ -208,6 +183,55 @@ export default function JSONFormatterPage() {
               </div>
             )}
           </div>
+
+          {/* Actions sit directly under the input they act on, and stay disabled until there is input */}
+          <div className="flex items-center gap-2 flex-wrap">
+            <Button onClick={handleFormat} size="sm" className="h-8" disabled={!hasInput}>
+              Format
+            </Button>
+            <Button onClick={handleMinify} size="sm" variant="outline" className="h-8" disabled={!hasInput}>
+              Minify
+            </Button>
+            <Button onClick={handleValidate} size="sm" variant="outline" className="h-8" disabled={!hasInput}>
+              Validate
+            </Button>
+
+            <div className="flex items-center gap-1 ml-1">
+              <span className="text-xs text-muted-foreground mr-1">Indent</span>
+              {[2, 4].map((n) => (
+                <Button
+                  key={n}
+                  size="sm"
+                  variant={indent === n ? "default" : "outline"}
+                  className="h-7 w-7 p-0 text-xs"
+                  onClick={() => {
+                    setIndent(n);
+                    if (hasInput) runFormat(input, n);
+                  }}
+                >
+                  {n}
+                </Button>
+              ))}
+            </div>
+
+            <Button
+              onClick={handleClear}
+              size="sm"
+              variant="ghost"
+              className="h-8 ml-auto text-muted-foreground"
+              disabled={!input && !output}
+            >
+              Clear
+            </Button>
+          </div>
+
+          {/* Feedback sits next to the button that produced it */}
+          {valid !== null && !error && (
+            <div className="flex items-center gap-2 text-sm text-emerald-600 dark:text-emerald-400">
+              <CheckCircle2 className="h-4 w-4" />
+              Valid JSON
+            </div>
+          )}
         </div>
 
         {/* ── Output panel ── */}

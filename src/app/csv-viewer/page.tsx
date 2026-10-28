@@ -1,9 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
 import ToolShell from "@/components/shared/ToolShell";
 import { Textarea } from "@/components/ui/textarea";
 import { parseCSVForViewer } from "@/lib/tools/csv-viewer";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, Upload, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const SAMPLE = `name,age,city,email
@@ -21,16 +21,106 @@ const DELIMITERS = [
 export default function CSVViewerPage() {
   const [input, setInput] = useState(SAMPLE);
   const [delimiter, setDelimiter] = useState(",");
+  const [isDragging, setIsDragging] = useState(false);
+  const [fileName, setFileName] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const data = parseCSVForViewer(input, delimiter);
 
+  function loadFile(file: File) {
+    if (!file) return;
+    setFileName(file.name);
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setInput(e.target?.result as string);
+    };
+    reader.readAsText(file, "UTF-8");
+  }
+
+  function handleFileInput(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (file) loadFile(file);
+    e.target.value = "";
+  }
+
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  }, []);
+
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+      setIsDragging(false);
+    }
+  }, []);
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) loadFile(file);
+  }, []);
+
+  function handleClear() {
+    setInput("");
+    setFileName(null);
+  }
+
   return (
-    <ToolShell title="CSV Viewer" description="Paste CSV data and view it as an interactive table. Supports headers, quoted fields, and custom delimiters.">
+    <ToolShell title="CSV Viewer" description="Upload or paste CSV data and view it as an interactive table. Supports headers, quoted fields, and custom delimiters.">
       <div className="space-y-4">
         <div className="flex flex-col gap-2">
-          <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">CSV Input</label>
-          <Textarea value={input} onChange={(e) => setInput(e.target.value)}
-            placeholder="Paste CSV here..."
-            className="font-mono text-[13px] min-h-28 resize-y bg-muted/30 border-border/60 focus-visible:ring-primary/30" />
+          <div className="flex items-center justify-between h-7">
+            <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">CSV Input</label>
+            <div className="flex items-center gap-2">
+              {fileName && (
+                <span className="flex items-center gap-1 text-xs text-muted-foreground bg-muted/50 px-2 py-0.5 rounded-md border border-border/50">
+                  {fileName}
+                  <button
+                    onClick={handleClear}
+                    className="ml-0.5 text-muted-foreground/60 hover:text-foreground transition-colors"
+                    aria-label="Remove file"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </span>
+              )}
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors"
+              >
+                <Upload className="h-3.5 w-3.5" />
+                Upload file
+              </button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".csv,text/plain,text/csv"
+                className="hidden"
+                onChange={handleFileInput}
+              />
+            </div>
+          </div>
+
+          <div
+            className={cn(
+              "relative rounded-lg transition-colors",
+              isDragging && "ring-2 ring-primary ring-offset-1 bg-primary/5"
+            )}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+          >
+            <Textarea value={input} onChange={(e) => { setInput(e.target.value); if (fileName) setFileName(null); }}
+              placeholder="Paste CSV here or drag & drop a .csv file..."
+              className="font-mono text-[13px] min-h-28 resize-y bg-muted/30 border-border/60 focus-visible:ring-primary/30" />
+            {isDragging && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 rounded-lg pointer-events-none">
+                <Upload className="h-8 w-8 text-primary/70" />
+                <span className="text-sm font-medium text-primary/80">Drop your CSV file here</span>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Delimiter selector */}

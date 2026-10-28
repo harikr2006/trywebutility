@@ -358,14 +358,6 @@ export const tools: Tool[] = [
     tags: ["cron", "schedule", "interval", "jobs"],
   },
   {
-    name: "Text Diff Viewer",
-    description: "Compare two text blocks side by side and highlight differences.",
-    path: "/diff-viewer",
-    icon: "Columns2",
-    category: "Testers & Analysis",
-    tags: ["diff", "compare", "text", "changes"],
-  },
-  {
     name: "Word & Character Counter",
     description: "Count words, characters, lines, sentences, and estimate reading time.",
     path: "/word-counter",
