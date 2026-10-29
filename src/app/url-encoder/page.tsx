@@ -13,6 +13,7 @@ export default function URLEncoderPage() {
   const [output, setOutput] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [mode, setMode] = useState<"encode" | "decode" | null>(null);
+  const hasInput = input.trim().length > 0;
 
   function handleEncode() {
     const { output: out, error: err } = encodeURL(input);
@@ -47,19 +48,6 @@ export default function URLEncoderPage() {
       title="URL Encoder / Decoder"
       description="Encode or decode URL components and query strings. All processing in your browser."
     >
-      <div className="flex items-center gap-2 flex-wrap">
-        <Button onClick={handleEncode} size="sm" className="h-8 gap-1.5">
-          <ArrowDownToLine className="h-3.5 w-3.5" /> Encode
-        </Button>
-        <Button onClick={handleDecode} size="sm" variant="outline" className="h-8 gap-1.5">
-          <ArrowUpFromLine className="h-3.5 w-3.5" /> Decode
-        </Button>
-        <Button onClick={handleSwap} size="sm" variant="outline" className="h-8 gap-1.5" disabled={!output}>
-          <ArrowLeftRight className="h-3.5 w-3.5" /> Use output as input
-        </Button>
-        <Button onClick={handleClear} size="sm" variant="ghost" className="h-8 ml-auto text-muted-foreground">Clear</Button>
-      </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
           <div className="flex items-center h-7">
@@ -74,6 +62,18 @@ export default function URLEncoderPage() {
             onChange={(e) => setInput(e.target.value)}
             spellCheck={false}
           />
+          <div className="flex items-center gap-2 flex-wrap">
+            <Button onClick={handleEncode} size="sm" className="h-8 gap-1.5" disabled={!hasInput}>
+              <ArrowDownToLine className="h-3.5 w-3.5" /> Encode
+            </Button>
+            <Button onClick={handleDecode} size="sm" variant="outline" className="h-8 gap-1.5" disabled={!hasInput}>
+              <ArrowUpFromLine className="h-3.5 w-3.5" /> Decode
+            </Button>
+            <Button onClick={handleSwap} size="sm" variant="outline" className="h-8 gap-1.5" disabled={!output}>
+              <ArrowLeftRight className="h-3.5 w-3.5" /> Use output as input
+            </Button>
+            <Button onClick={handleClear} size="sm" variant="ghost" className="h-8 ml-auto text-muted-foreground" disabled={!input && !output}>Clear</Button>
+          </div>
         </div>
 
         <div className="flex flex-col gap-2">

@@ -123,25 +123,13 @@ export default function Base64Page() {
   }
 
   const decodedIsBinary = mode === "decode" && output && isBinaryOutput(output);
+  const hasInput = input.trim().length > 0;
 
   return (
     <ToolShell
       title="Base64 Encoder / Decoder"
       description="Encode text or files to Base64, or decode Base64 strings. All processing in your browser."
     >
-      <div className="flex items-center gap-2 flex-wrap">
-        <Button onClick={handleEncode} size="sm" className="h-8 gap-1.5">
-          <ArrowDownToLine className="h-3.5 w-3.5" /> Encode
-        </Button>
-        <Button onClick={handleDecode} size="sm" variant="outline" className="h-8 gap-1.5">
-          <ArrowUpFromLine className="h-3.5 w-3.5" /> Decode
-        </Button>
-        <Button onClick={handleSwap} size="sm" variant="outline" className="h-8 gap-1.5" disabled={!output}>
-          <ArrowLeftRight className="h-3.5 w-3.5" /> Use output as input
-        </Button>
-        <Button onClick={handleClear} size="sm" variant="ghost" className="h-8 ml-auto text-muted-foreground">Clear</Button>
-      </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Input panel */}
         <div className="flex flex-col gap-2">
@@ -213,6 +201,18 @@ export default function Base64Page() {
                 <span className="text-sm font-medium text-primary/80">Drop file to encode as Base64</span>
               </div>
             )}
+          </div>
+          <div className="flex items-center gap-2 flex-wrap">
+            <Button onClick={handleEncode} size="sm" className="h-8 gap-1.5" disabled={!hasInput && !isFileBinary}>
+              <ArrowDownToLine className="h-3.5 w-3.5" /> Encode
+            </Button>
+            <Button onClick={handleDecode} size="sm" variant="outline" className="h-8 gap-1.5" disabled={!hasInput}>
+              <ArrowUpFromLine className="h-3.5 w-3.5" /> Decode
+            </Button>
+            <Button onClick={handleSwap} size="sm" variant="outline" className="h-8 gap-1.5" disabled={!output}>
+              <ArrowLeftRight className="h-3.5 w-3.5" /> Use output as input
+            </Button>
+            <Button onClick={handleClear} size="sm" variant="ghost" className="h-8 ml-auto text-muted-foreground" disabled={!input && !output && !isFileBinary}>Clear</Button>
           </div>
         </div>
 

@@ -12,6 +12,7 @@ export default function HTMLFormatterPage() {
   const [output, setOutput] = useState("");
   const [error, setError] = useState("");
   const [mode, setMode] = useState<"format" | "minify">("format");
+  const hasInput = input.trim().length > 0;
 
   function handleProcess(m: "format" | "minify" = mode) {
     setMode(m);
@@ -24,11 +25,6 @@ export default function HTMLFormatterPage() {
   return (
     <ToolShell title="HTML Formatter" description="Prettify or minify HTML markup. All processing in your browser.">
       <div className="space-y-4">
-        <div className="flex gap-2">
-          <Button size="sm" variant={mode === "format" ? "default" : "outline"} onClick={() => handleProcess("format")}>Format / Beautify</Button>
-          <Button size="sm" variant={mode === "minify" ? "default" : "outline"} onClick={() => handleProcess("minify")}>Minify</Button>
-          <Button size="sm" variant="ghost" className="ml-auto" onClick={() => { setInput(""); setOutput(""); setError(""); }}>Clear</Button>
-        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex flex-col gap-2">
             <div className="flex items-center h-7">
@@ -40,6 +36,11 @@ export default function HTMLFormatterPage() {
               placeholder="Paste your HTML here..."
               className="font-mono text-[13px] min-h-[400px] resize-y bg-muted/30 border-border/60 focus-visible:ring-primary/30"
             />
+            <div className="flex gap-2">
+              <Button size="sm" variant={mode === "format" ? "default" : "outline"} onClick={() => handleProcess("format")} disabled={!hasInput}>Format / Beautify</Button>
+              <Button size="sm" variant={mode === "minify" ? "default" : "outline"} onClick={() => handleProcess("minify")} disabled={!hasInput}>Minify</Button>
+              <Button size="sm" variant="ghost" className="ml-auto" onClick={() => { setInput(""); setOutput(""); setError(""); }} disabled={!input && !output}>Clear</Button>
+            </div>
           </div>
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between h-7">

@@ -11,6 +11,7 @@ export default function HtmlToMarkdownPage() {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [error, setError] = useState("");
+  const hasInput = input.trim().length > 0;
 
   function convert() {
     setError("");
@@ -28,15 +29,6 @@ export default function HtmlToMarkdownPage() {
 
   return (
     <ToolShell title="HTML → Markdown" description="Convert HTML markup to clean, readable Markdown text.">
-      <div className="flex flex-wrap items-center gap-2 mb-4">
-        <Button size="sm" className="h-8" onClick={convert}>
-          Convert
-        </Button>
-        <Button size="sm" className="h-8" variant="ghost" onClick={clear}>
-          Clear
-        </Button>
-      </div>
-
       {error && (
         <div className="flex gap-2 rounded-lg border border-destructive/40 bg-destructive/8 p-3 text-sm text-destructive font-mono mb-4">
           <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
@@ -57,6 +49,14 @@ export default function HtmlToMarkdownPage() {
             placeholder="Paste HTML here…"
             className="font-mono text-[13px] min-h-72 resize-y bg-muted/30 border-border/60 focus-visible:ring-primary/30"
           />
+          <div className="flex flex-wrap items-center gap-2">
+            <Button size="sm" className="h-8" onClick={convert} disabled={!hasInput}>
+              Convert
+            </Button>
+            <Button size="sm" className="h-8" variant="ghost" onClick={clear} disabled={!input && !output}>
+              Clear
+            </Button>
+          </div>
         </div>
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between h-7">
