@@ -929,6 +929,14 @@ export const tools: Tool[] = [
     tags: ["css", "color", "shades", "palette", "tailwind", "design"],
   },
   {
+    name: "Color Swatch Builder",
+    description: "Build, name, and export color swatches. Add colors manually or generate random harmonious palettes.",
+    path: "/color-swatch",
+    icon: "PaintBucket",
+    category: "Generators",
+    tags: ["color", "swatch", "palette", "design", "export", "css", "random"],
+  },
+  {
     name: "CSS Clip Path Generator",
     description: "Visually build polygon, circle, and ellipse clip-paths with a drag-and-drop editor.",
     path: "/css-clip-path",
