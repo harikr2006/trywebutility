@@ -75,19 +75,6 @@ export default function StringEscapePage() {
         ))}
       </div>
 
-      {/* Toolbar */}
-      <div className="flex flex-wrap items-center gap-2">
-        <Button size="sm" className="h-8" onClick={handleEscape}>
-          Escape
-        </Button>
-        <Button size="sm" className="h-8" onClick={handleUnescape}>
-          Unescape
-        </Button>
-        <Button size="sm" className="h-8 ml-auto" variant="ghost" onClick={handleClear}>
-          Clear
-        </Button>
-      </div>
-
       {/* Panels */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
@@ -100,6 +87,18 @@ export default function StringEscapePage() {
             placeholder="Paste string here..."
             className="font-mono text-[13px] min-h-72 resize-y bg-muted/30 border-border/60 focus-visible:ring-primary/30"
           />
+          {/* Toolbar */}
+          <div className="flex flex-wrap items-center gap-2">
+            <Button size="sm" className="h-8" onClick={handleEscape} disabled={!input.trim()}>
+              Escape
+            </Button>
+            <Button size="sm" className="h-8" onClick={handleUnescape} disabled={!input.trim()}>
+              Unescape
+            </Button>
+            <Button size="sm" className="h-8 ml-auto" variant="ghost" onClick={handleClear} disabled={!input && !output}>
+              Clear
+            </Button>
+          </div>
         </div>
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between h-7">

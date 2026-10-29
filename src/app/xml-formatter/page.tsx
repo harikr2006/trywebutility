@@ -16,6 +16,7 @@ export default function XMLFormatterPage() {
   const [isDragging, setIsDragging] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const hasInput = input.trim().length > 0;
 
   function handleFormat() {
     const { output: out, error: err } = formatXML(input);
@@ -88,12 +89,6 @@ export default function XMLFormatterPage() {
       title="XML Formatter"
       description="Prettify and minify XML documents. Upload a file or paste — all processing in your browser."
     >
-      <div className="flex items-center gap-2 flex-wrap">
-        <Button onClick={handleFormat} size="sm" className="h-8">Format</Button>
-        <Button onClick={handleMinify} size="sm" variant="outline" className="h-8">Minify</Button>
-        <Button onClick={handleClear} size="sm" variant="ghost" className="h-8 ml-auto text-muted-foreground">Clear</Button>
-      </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Input panel */}
         <div className="flex flex-col gap-2">
@@ -137,6 +132,11 @@ export default function XMLFormatterPage() {
                 <span className="text-sm font-medium text-primary/80">Drop your XML file here</span>
               </div>
             )}
+          </div>
+          <div className="flex items-center gap-2 flex-wrap">
+            <Button onClick={handleFormat} size="sm" className="h-8" disabled={!hasInput}>Format</Button>
+            <Button onClick={handleMinify} size="sm" variant="outline" className="h-8" disabled={!hasInput}>Minify</Button>
+            <Button onClick={handleClear} size="sm" variant="ghost" className="h-8 ml-auto text-muted-foreground" disabled={!input && !output}>Clear</Button>
           </div>
         </div>
 

@@ -41,7 +41,7 @@ export default function HtmlToJsxPage() {
       description="Convert HTML markup to React JSX — renames attributes (class→className), self-closes void elements, and converts inline styles."
     >
       <div className="flex flex-wrap items-center gap-2 mb-4">
-        <Button size="sm" className="h-8" variant="ghost" onClick={clear}>
+        <Button size="sm" className="h-8" variant="ghost" onClick={clear} disabled={!input && !output}>
           Clear
         </Button>
       </div>

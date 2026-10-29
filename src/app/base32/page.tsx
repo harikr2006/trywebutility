@@ -57,7 +57,7 @@ export default function Base32Page() {
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
               {mode === "encode" ? "Text Input" : "Base32 Input"}
             </label>
-            <Button size="sm" variant="ghost" className="h-7 text-xs" onClick={() => setInput("")}>Clear</Button>
+            <Button size="sm" variant="ghost" className="h-7 text-xs" onClick={() => setInput("")} disabled={!input}>Clear</Button>
           </div>
           <Textarea
             value={input}

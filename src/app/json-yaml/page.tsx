@@ -26,6 +26,8 @@ export default function JsonYamlPage() {
     setError("");
   }
 
+  const hasInput = input.trim().length > 0;
+
   function clear() {
     setInput("");
     setOutput("");
@@ -34,27 +36,6 @@ export default function JsonYamlPage() {
 
   return (
     <ToolShell title="JSON ↔ YAML Converter" description="Convert between JSON → YAML formats.">
-      <div className="flex flex-wrap items-center gap-2 mb-4">
-        <Button size="sm" className="h-8" onClick={() => convert("json-to-yaml")}>
-          JSON → YAML
-        </Button>
-        <Button size="sm" className="h-8" onClick={() => convert("yaml-to-json")}>
-          YAML → JSON
-        </Button>
-        <Button
-          size="sm"
-          className="h-8"
-          variant="outline"
-          onClick={swap}
-          disabled={!output}
-        >
-          Use output as input
-        </Button>
-        <Button size="sm" className="h-8" variant="ghost" onClick={clear}>
-          Clear
-        </Button>
-      </div>
-
       {error && (
         <div className="flex gap-2 rounded-lg border border-destructive/40 bg-destructive/8 p-3 text-sm text-destructive font-mono mb-4">
           <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
@@ -75,6 +56,26 @@ export default function JsonYamlPage() {
             placeholder="Paste JSON or YAML here…"
             className="font-mono text-[13px] min-h-72 resize-y bg-muted/30 border-border/60 focus-visible:ring-primary/30"
           />
+          <div className="flex flex-wrap items-center gap-2">
+            <Button size="sm" className="h-8" onClick={() => convert("json-to-yaml")} disabled={!hasInput}>
+              JSON → YAML
+            </Button>
+            <Button size="sm" className="h-8" onClick={() => convert("yaml-to-json")} disabled={!hasInput}>
+              YAML → JSON
+            </Button>
+            <Button
+              size="sm"
+              className="h-8"
+              variant="outline"
+              onClick={swap}
+              disabled={!output}
+            >
+              Use output as input
+            </Button>
+            <Button size="sm" className="h-8 ml-auto" variant="ghost" onClick={clear} disabled={!input && !output}>
+              Clear
+            </Button>
+          </div>
         </div>
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between h-7">

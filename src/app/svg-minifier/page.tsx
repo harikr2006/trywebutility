@@ -77,16 +77,6 @@ export default function SvgMinifierPage() {
           </div>
         )}
 
-        {/* Actions */}
-        <div className="flex gap-2">
-          <Button size="sm" className="h-8" onClick={handleMinify}>
-            Minify
-          </Button>
-          <Button size="sm" className="h-8" variant="ghost" onClick={handleClear}>
-            Clear
-          </Button>
-        </div>
-
         {/* Error */}
         {error && (
           <div className="flex gap-2 rounded-lg border border-destructive/40 bg-destructive/8 p-3 text-sm text-destructive font-mono">
@@ -107,6 +97,15 @@ export default function SvgMinifierPage() {
               placeholder="Paste your SVG markup here..."
               className="font-mono text-[13px] min-h-72 resize-y bg-muted/30 border-border/60 focus-visible:ring-primary/30"
             />
+            {/* Actions */}
+            <div className="flex gap-2">
+              <Button size="sm" className="h-8" onClick={handleMinify} disabled={!input.trim()}>
+                Minify
+              </Button>
+              <Button size="sm" className="h-8" variant="ghost" onClick={handleClear} disabled={!input && !output}>
+                Clear
+              </Button>
+            </div>
           </div>
 
           <div className="space-y-1.5">

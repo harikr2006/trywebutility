@@ -33,17 +33,10 @@ export default function JsonSchemaValidatorPage() {
     setResult(null);
   }
 
+  const hasInput = schema.trim().length > 0 || data.trim().length > 0;
+
   return (
     <ToolShell title="JSON Schema Validator" description="Validate JSON data against a JSON Schema (Draft-07).">
-      <div className="flex flex-wrap items-center gap-2 mb-4">
-        <Button size="sm" className="h-8" onClick={validate}>
-          Validate
-        </Button>
-        <Button size="sm" className="h-8" variant="ghost" onClick={clear}>
-          Clear
-        </Button>
-      </div>
-
       {result?.error && (
         <div className="flex gap-2 rounded-lg border border-destructive/40 bg-destructive/8 p-3 text-sm text-destructive font-mono mb-4">
           <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
@@ -78,6 +71,15 @@ export default function JsonSchemaValidatorPage() {
             className="font-mono text-[13px] min-h-72 resize-y bg-muted/30 border-border/60 focus-visible:ring-primary/30"
           />
         </div>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2 mt-2">
+        <Button size="sm" className="h-8" onClick={validate} disabled={!hasInput}>
+          Validate
+        </Button>
+        <Button size="sm" className="h-8" variant="ghost" onClick={clear} disabled={!hasInput && !result}>
+          Clear
+        </Button>
       </div>
 
       {result && !result.error && (

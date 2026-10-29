@@ -27,7 +27,7 @@ export default function JSONSchemaPage() {
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Input JSON</label>
             <div className="flex items-center gap-2">
               <CopyButton text={input} />
-              <Button size="sm" variant="ghost" className="h-7 text-xs" onClick={() => { setInput(""); setOutput(""); setError(""); }}>Clear</Button>
+              <Button size="sm" variant="ghost" className="h-7 text-xs" onClick={() => { setInput(""); setOutput(""); setError(""); }} disabled={!input}>Clear</Button>
             </div>
           </div>
           <Textarea

@@ -72,15 +72,6 @@ export default function JsMinifierPage() {
           </span>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Button size="sm" className="h-8" onClick={handleMinify}>
-            Minify
-          </Button>
-          <Button size="sm" className="h-8" variant="ghost" onClick={handleClear}>
-            Clear
-          </Button>
-        </div>
-
         {result?.error && (
           <div className="flex gap-2 rounded-lg border border-destructive/40 bg-destructive/8 p-3 text-sm text-destructive font-mono">
             <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
@@ -101,6 +92,14 @@ export default function JsMinifierPage() {
               placeholder="Paste JavaScript code here..."
               className="font-mono text-[13px] min-h-72 resize-y bg-muted/30 border-border/60 focus-visible:ring-primary/30"
             />
+            <div className="flex items-center gap-2">
+              <Button size="sm" className="h-8" onClick={handleMinify} disabled={!input.trim()}>
+                Minify
+              </Button>
+              <Button size="sm" className="h-8" variant="ghost" onClick={handleClear} disabled={!input && !result}>
+                Clear
+              </Button>
+            </div>
           </div>
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between h-7">

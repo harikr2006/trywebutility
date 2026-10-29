@@ -11,6 +11,7 @@ export default function HTMLEntityPage() {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [error, setError] = useState("");
+  const hasInput = input.trim().length > 0;
 
   function handleEncode() {
     setError("");
@@ -47,30 +48,6 @@ export default function HTMLEntityPage() {
 
   return (
     <ToolShell title="HTML Entity Encoder / Decoder" description="Encode or decode HTML entities. All processing in your browser.">
-      {/* Toolbar */}
-      <div className="flex flex-wrap items-center gap-2">
-        <Button size="sm" className="h-8" onClick={handleEncode}>
-          Encode
-        </Button>
-        <Button size="sm" className="h-8" onClick={handleDecode}>
-          Decode
-        </Button>
-        <Button
-          size="sm"
-          className="h-8"
-          variant="outline"
-          onClick={handleSwap}
-          disabled={!output}
-          title="Use output as input"
-        >
-          <ArrowLeftRight className="h-3.5 w-3.5 mr-1" />
-          Use output as input
-        </Button>
-        <Button size="sm" className="h-8 ml-auto" variant="ghost" onClick={handleClear}>
-          Clear
-        </Button>
-      </div>
-
       {/* Panels */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
@@ -83,6 +60,29 @@ export default function HTMLEntityPage() {
             placeholder="Paste text or HTML here..."
             className="font-mono text-[13px] min-h-72 resize-y bg-muted/30 border-border/60 focus-visible:ring-primary/30"
           />
+          {/* Toolbar */}
+          <div className="flex flex-wrap items-center gap-2">
+            <Button size="sm" className="h-8" onClick={handleEncode} disabled={!hasInput}>
+              Encode
+            </Button>
+            <Button size="sm" className="h-8" onClick={handleDecode} disabled={!hasInput}>
+              Decode
+            </Button>
+            <Button
+              size="sm"
+              className="h-8"
+              variant="outline"
+              onClick={handleSwap}
+              disabled={!output}
+              title="Use output as input"
+            >
+              <ArrowLeftRight className="h-3.5 w-3.5 mr-1" />
+              Use output as input
+            </Button>
+            <Button size="sm" className="h-8 ml-auto" variant="ghost" onClick={handleClear} disabled={!input && !output}>
+              Clear
+            </Button>
+          </div>
         </div>
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between h-7">

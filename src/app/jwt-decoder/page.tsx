@@ -73,11 +73,6 @@ export default function JWTDecoderPage() {
         ))}
       </div>
 
-      <div className="flex items-center gap-2">
-        <Button onClick={handleDecode} size="sm" className="h-8">Decode</Button>
-        <Button onClick={handleClear} size="sm" variant="ghost" className="h-8 text-muted-foreground">Clear</Button>
-      </div>
-
       <Textarea
         className="font-mono text-[13px] min-h-24 resize-none bg-muted/30 border-border/60 focus-visible:ring-primary/30"
         placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0..."
@@ -85,6 +80,11 @@ export default function JWTDecoderPage() {
         onChange={(e) => setInput(e.target.value)}
         spellCheck={false}
       />
+
+      <div className="flex items-center gap-2">
+        <Button onClick={handleDecode} size="sm" className="h-8" disabled={!input.trim()}>Decode</Button>
+        <Button onClick={handleClear} size="sm" variant="ghost" className="h-8 text-muted-foreground" disabled={!input && !decoded}>Clear</Button>
+      </div>
 
       {error && (
         <div className="flex gap-2 rounded-lg border border-destructive/40 bg-destructive/8 p-3 text-sm text-destructive font-mono">

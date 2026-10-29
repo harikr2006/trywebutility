@@ -34,6 +34,7 @@ export default function XmlYamlPage() {
     }
   }
 
+  const hasInput = input.trim().length > 0;
   const inputLabel = direction === "xml-to-yaml" ? "XML Input" : "YAML Input";
   const outputLabel =
     direction === "xml-to-yaml" ? "YAML Output" : "XML Output";
@@ -44,27 +45,6 @@ export default function XmlYamlPage() {
       description="Convert between XML and YAML formats."
     >
       <div className="space-y-4">
-        {/* Direction buttons */}
-        <div className="flex gap-2">
-          {(["xml-to-yaml", "yaml-to-xml"] as const).map((dir) => (
-            <Button
-              key={dir}
-              size="sm"
-              className="h-8"
-              variant={direction === dir ? "default" : "outline"}
-              onClick={() => {
-                if (dir !== direction) {
-                  setInput(""); setOutput(""); setError(null); setDirection(dir);
-                } else {
-                  handleConvert(dir);
-                }
-              }}
-            >
-              {dir === "xml-to-yaml" ? "XML → YAML" : "YAML → XML"}
-            </Button>
-          ))}
-        </div>
-
         {/* Two-column layout */}
         <div className="grid gap-4 lg:grid-cols-2">
           <div className="space-y-1.5">
@@ -81,6 +61,36 @@ export default function XmlYamlPage() {
               }
               className="font-mono text-[13px] min-h-72 resize-y bg-muted/30 border-border/60 focus-visible:ring-primary/30"
             />
+            {/* Direction buttons */}
+            <div className="flex gap-2">
+              {(["xml-to-yaml", "yaml-to-xml"] as const).map((dir) => (
+                <Button
+                  key={dir}
+                  size="sm"
+                  className="h-8"
+                  variant={direction === dir ? "default" : "outline"}
+                  onClick={() => {
+                    if (dir !== direction) {
+                      setInput(""); setOutput(""); setError(null); setDirection(dir);
+                    } else {
+                      handleConvert(dir);
+                    }
+                  }}
+                  disabled={direction === dir && !hasInput}
+                >
+                  {dir === "xml-to-yaml" ? "XML → YAML" : "YAML → XML"}
+                </Button>
+              ))}
+              <Button
+                size="sm"
+                className="h-8 ml-auto"
+                variant="ghost"
+                onClick={() => { setInput(""); setOutput(""); setError(null); }}
+                disabled={!input && !output}
+              >
+                Clear
+              </Button>
+            </div>
           </div>
 
           <div className="space-y-1.5">

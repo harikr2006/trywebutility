@@ -26,6 +26,8 @@ export default function TomlJsonPage() {
     if (err) setError(err);
   }
 
+  const hasInput = input.trim().length > 0;
+
   function clear() {
     setInput("");
     setOutput("");
@@ -34,18 +36,6 @@ export default function TomlJsonPage() {
 
   return (
     <ToolShell title="TOML ↔ JSON" description="Convert between TOML and JSON configuration formats.">
-      <div className="flex flex-wrap items-center gap-2 mb-4">
-        <Button size="sm" className="h-8" onClick={() => convert("toml-to-json")}>
-          TOML → JSON
-        </Button>
-        <Button size="sm" className="h-8" onClick={() => convert("json-to-toml")}>
-          JSON → TOML
-        </Button>
-        <Button size="sm" className="h-8" variant="ghost" onClick={clear}>
-          Clear
-        </Button>
-      </div>
-
       {error && (
         <div className="flex gap-2 rounded-lg border border-destructive/40 bg-destructive/8 p-3 text-sm text-destructive font-mono mb-4">
           <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
@@ -66,6 +56,17 @@ export default function TomlJsonPage() {
             placeholder={TOML_PLACEHOLDER}
             className="font-mono text-[13px] min-h-72 resize-y bg-muted/30 border-border/60 focus-visible:ring-primary/30"
           />
+          <div className="flex flex-wrap items-center gap-2">
+            <Button size="sm" className="h-8" onClick={() => convert("toml-to-json")} disabled={!hasInput}>
+              TOML → JSON
+            </Button>
+            <Button size="sm" className="h-8" onClick={() => convert("json-to-toml")} disabled={!hasInput}>
+              JSON → TOML
+            </Button>
+            <Button size="sm" className="h-8 ml-auto" variant="ghost" onClick={clear} disabled={!input && !output}>
+              Clear
+            </Button>
+          </div>
         </div>
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between h-7">

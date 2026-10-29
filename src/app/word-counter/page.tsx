@@ -105,7 +105,7 @@ export default function WordCounterPage() {
                 className="hidden"
                 onChange={handleFileInput}
               />
-              <Button size="sm" variant="ghost" className="h-7 text-xs" onClick={handleClear}>Clear</Button>
+              <Button size="sm" variant="ghost" className="h-7 text-xs" onClick={handleClear} disabled={!input}>Clear</Button>
             </div>
           </div>
           <div

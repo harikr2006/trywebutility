@@ -27,6 +27,8 @@ export default function JsonToTsPage() {
     setError("");
   }
 
+  const hasInput = input.trim().length > 0;
+
   return (
     <ToolShell
       title="JSON to TypeScript"
@@ -44,14 +46,6 @@ export default function JsonToTsPage() {
             className="h-8 rounded-md border border-border/60 bg-background px-3 text-sm w-48"
             placeholder="Root"
           />
-        </div>
-        <div className="flex items-end gap-2">
-          <Button size="sm" className="h-8" onClick={generate}>
-            Generate
-          </Button>
-          <Button size="sm" className="h-8" variant="ghost" onClick={clear}>
-            Clear
-          </Button>
         </div>
       </div>
 
@@ -75,6 +69,14 @@ export default function JsonToTsPage() {
             placeholder='Paste JSON here… e.g. {"name": "Alice", "age": 30}'
             className="font-mono text-[13px] min-h-72 resize-y bg-muted/30 border-border/60 focus-visible:ring-primary/30"
           />
+          <div className="flex items-center gap-2">
+            <Button size="sm" className="h-8" onClick={generate} disabled={!hasInput}>
+              Generate
+            </Button>
+            <Button size="sm" className="h-8" variant="ghost" onClick={clear} disabled={!input && !output}>
+              Clear
+            </Button>
+          </div>
         </div>
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between h-7">

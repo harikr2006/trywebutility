@@ -51,7 +51,7 @@ export default function CurlToCodePage() {
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
               cURL Command
             </label>
-            <Button size="sm" className="h-8" variant="ghost" onClick={clear}>
+            <Button size="sm" className="h-8" variant="ghost" onClick={clear} disabled={!input}>
               Clear
             </Button>
           </div>

@@ -116,7 +116,7 @@ export default function LineCounterPage() {
                   {stats.language}
                 </span>
               )}
-              <Button size="sm" variant="ghost" className="h-7 text-xs" onClick={() => setInput("")}>Clear</Button>
+              <Button size="sm" variant="ghost" className="h-7 text-xs" onClick={() => setInput("")} disabled={!input}>Clear</Button>
             </div>
           </div>
           <Textarea

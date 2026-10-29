@@ -46,7 +46,7 @@ export default function TextCasePage() {
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Input Text</label>
-            <Button size="sm" variant="ghost" className="h-7 text-xs" onClick={() => setInput("")}>Clear</Button>
+            <Button size="sm" variant="ghost" className="h-7 text-xs" onClick={() => setInput("")} disabled={!input}>Clear</Button>
           </div>
           <Textarea
             value={input}

@@ -25,6 +25,8 @@ export default function JSONPathPage() {
     setResult(testJSONPath(json, path));
   }
 
+  const hasInput = json.trim().length > 0;
+
   return (
     <ToolShell title="JSON Path Tester" description="Test JSONPath expressions against JSON data and inspect matching results.">
       <div className="space-y-4">
@@ -35,9 +37,8 @@ export default function JSONPathPage() {
             onChange={(e) => setPath(e.target.value)}
             placeholder="$.store.books[*].title"
             className="flex-1 h-9 rounded-md border border-border/60 bg-background px-3 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
-            onKeyDown={(e) => e.key === "Enter" && handleTest()}
+            onKeyDown={(e) => e.key === "Enter" && hasInput && handleTest()}
           />
-          <Button size="sm" className="h-9" onClick={handleTest}>Test</Button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex flex-col gap-2">
@@ -47,6 +48,9 @@ export default function JSONPathPage() {
               onChange={(e) => setJson(e.target.value)}
               className="font-mono text-[13px] min-h-[400px] resize-y bg-muted/30 border-border/60 focus-visible:ring-primary/30"
             />
+            <div className="flex items-center gap-2">
+              <Button size="sm" className="h-8" onClick={handleTest} disabled={!hasInput}>Test</Button>
+            </div>
           </div>
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between">

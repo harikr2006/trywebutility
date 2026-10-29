@@ -96,20 +96,10 @@ export default function CsvJsonPage() {
     URL.revokeObjectURL(url);
   }
 
+  const hasInput = input.trim().length > 0;
+
   return (
     <ToolShell title="CSV ↔ JSON Converter" description="Convert between CSV and JSON formats. Upload a file or paste — auto-detected on upload.">
-      <div className="flex flex-wrap items-center gap-2 mb-4">
-        <Button size="sm" className="h-8" onClick={() => convert("csv-to-json")}>
-          CSV → JSON
-        </Button>
-        <Button size="sm" className="h-8" onClick={() => convert("json-to-csv")}>
-          JSON → CSV
-        </Button>
-        <Button size="sm" className="h-8" variant="ghost" onClick={clear}>
-          Clear
-        </Button>
-      </div>
-
       {error && (
         <div className="flex gap-2 rounded-lg border border-destructive/40 bg-destructive/8 p-3 text-sm text-destructive font-mono mb-4">
           <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
@@ -174,6 +164,17 @@ export default function CsvJsonPage() {
                 <span className="text-sm font-medium text-primary/80">Drop .csv or .json file here</span>
               </div>
             )}
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <Button size="sm" className="h-8" onClick={() => convert("csv-to-json")} disabled={!hasInput}>
+              CSV → JSON
+            </Button>
+            <Button size="sm" className="h-8" onClick={() => convert("json-to-csv")} disabled={!hasInput}>
+              JSON → CSV
+            </Button>
+            <Button size="sm" className="h-8 ml-auto" variant="ghost" onClick={clear} disabled={!input && !output}>
+              Clear
+            </Button>
           </div>
         </div>
 

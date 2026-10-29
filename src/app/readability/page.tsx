@@ -32,7 +32,7 @@ export default function ReadabilityPage() {
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Text to Analyze</label>
-            <Button size="sm" variant="ghost" className="h-7 text-xs" onClick={() => setText("")}>Clear</Button>
+            <Button size="sm" variant="ghost" className="h-7 text-xs" onClick={() => setText("")} disabled={!text}>Clear</Button>
           </div>
           <Textarea value={text} onChange={(e) => setText(e.target.value)}
             placeholder="Paste your text here..."

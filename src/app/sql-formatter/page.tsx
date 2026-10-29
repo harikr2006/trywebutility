@@ -18,6 +18,7 @@ export default function SQLFormatterPage() {
   const [isDragging, setIsDragging] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const hasInput = input.trim().length > 0;
 
   function handleFormat() {
     const { output: out, error: err } = formatSQL(input, dialect);
@@ -77,22 +78,6 @@ export default function SQLFormatterPage() {
 
   return (
     <ToolShell title="SQL Formatter" description="Format or minify SQL queries. Upload a file or paste — all processing in your browser.">
-      <div className="flex flex-wrap items-center gap-2">
-        <Button size="sm" className="h-8" onClick={handleFormat}>Format</Button>
-        <Button size="sm" className="h-8" variant="outline" onClick={handleMinify}>Minify</Button>
-        <select
-          value={dialect}
-          onChange={(e) => setDialect(e.target.value as Dialect)}
-          className="h-8 rounded-md border border-border/60 bg-background px-2 text-xs"
-        >
-          <option value="sql">SQL</option>
-          <option value="mysql">MySQL</option>
-          <option value="postgresql">PostgreSQL</option>
-          <option value="sqlite">SQLite</option>
-        </select>
-        <Button size="sm" className="h-8 ml-auto" variant="ghost" onClick={handleClear}>Clear</Button>
-      </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between h-7">
@@ -135,6 +120,21 @@ export default function SQLFormatterPage() {
                 <span className="text-sm font-medium text-primary/80">Drop your SQL file here</span>
               </div>
             )}
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <Button size="sm" className="h-8" onClick={handleFormat} disabled={!hasInput}>Format</Button>
+            <Button size="sm" className="h-8" variant="outline" onClick={handleMinify} disabled={!hasInput}>Minify</Button>
+            <select
+              value={dialect}
+              onChange={(e) => setDialect(e.target.value as Dialect)}
+              className="h-8 rounded-md border border-border/60 bg-background px-2 text-xs"
+            >
+              <option value="sql">SQL</option>
+              <option value="mysql">MySQL</option>
+              <option value="postgresql">PostgreSQL</option>
+              <option value="sqlite">SQLite</option>
+            </select>
+            <Button size="sm" className="h-8 ml-auto" variant="ghost" onClick={handleClear} disabled={!input && !output}>Clear</Button>
           </div>
         </div>
 
