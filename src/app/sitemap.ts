@@ -5,7 +5,7 @@ import { HTTP_STATUSES } from "@/lib/tools/http-status";
 export const dynamic = "force-static";
 
 const BASE = "https://trywebutility.com";
-const LAST_UPDATED = new Date("2026-10-10");
+const LAST_UPDATED = new Date("2026-10-29");
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const toolEntries: MetadataRoute.Sitemap = tools.map((tool) => ({

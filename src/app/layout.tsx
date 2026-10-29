@@ -7,6 +7,7 @@ import Sidebar from "@/components/layout/Sidebar";
 import AdPanel from "@/components/layout/AdPanel";
 import Footer from "@/components/layout/Footer";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import CanonicalLink from "@/components/shared/CanonicalLink";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -26,7 +27,7 @@ export const metadata: Metadata = {
     template: "%s | WebUtility",
   },
   description:
-    "110+ free browser-based developer tools. JSON formatter, regex tester, Base64 encoder, color contrast checker, unit converter, and many more. No sign-up required, no data leaves your browser.",
+    "115+ free browser-based developer tools. JSON formatter, regex tester, Base64 encoder, color contrast checker, unit converter, and many more. No sign-up required, no data leaves your browser.",
   keywords: [
     "developer tools", "online tools", "JSON formatter", "base64 encoder",
     "regex tester", "URL encoder", "JWT decoder", "CSS formatter",
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "WebUtility — Free Developer & Tech Tools",
     description:
-      "110+ free browser-based developer tools. No sign-up, no tracking, no data leaves your browser.",
+      "115+ free browser-based developer tools. No sign-up, no tracking, no data leaves your browser.",
     type: "website",
     siteName: "WebUtility",
   },
@@ -43,7 +44,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "WebUtility — Free Developer & Tech Tools",
     description:
-      "110+ free browser-based developer tools. No sign-up, no tracking, no data leaves your browser.",
+      "115+ free browser-based developer tools. No sign-up, no tracking, no data leaves your browser.",
   },
   robots: { index: true, follow: true },
   metadataBase: new URL("https://trywebutility.com"),
@@ -54,6 +55,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <head>
         <meta name="build-date" content={new Date().toISOString()} />
+        <CanonicalLink />
         {/* Prevent flash of unstyled dark/light mode — must be synchronous */}
         <script
           dangerouslySetInnerHTML={{
