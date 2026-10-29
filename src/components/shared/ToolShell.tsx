@@ -3,10 +3,15 @@
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { type ReactNode } from "react";
-import { Star } from "lucide-react";
+import { Star, ShieldCheck } from "lucide-react";
 import { useFavorites, normalizePath } from "@/hooks/useFavorites";
 
 const FAQBlock = dynamic(() => import("./FAQBlock"), {
+  ssr: false,
+  loading: () => null,
+});
+
+const HowToSection = dynamic(() => import("./HowToSection"), {
   ssr: false,
   loading: () => null,
 });
@@ -29,6 +34,10 @@ export default function ToolShell({ title, description, children }: ToolShellPro
           <div className="min-w-0">
             <h1 className="text-xl font-bold tracking-tight mb-1">{title}</h1>
             <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
+            <p className="mt-1.5 inline-flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400">
+              <ShieldCheck className="w-3 h-3" aria-hidden="true" />
+              Runs in your browser — no data leaves your device
+            </p>
           </div>
           {mounted && (
             <button
@@ -51,6 +60,7 @@ export default function ToolShell({ title, description, children }: ToolShellPro
         </div>
       </header>
       <div>{children}</div>
+      <HowToSection />
       <FAQBlock pathname={pathname} />
     </div>
   );

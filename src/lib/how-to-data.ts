@@ -1,0 +1,191 @@
+export interface HowToEntry {
+  name: string;
+  steps: string[];
+}
+
+export const howToData: Record<string, HowToEntry> = {
+  "/json-formatter": {
+    name: "JSON Formatter & Validator",
+    steps: [
+      "Paste or type your JSON into the input panel on the left.",
+      "The formatter automatically beautifies it with syntax highlighting and indentation.",
+      "Switch to the Minify tab to produce a compact single-line output for production use.",
+      "Click the Copy button to copy the formatted result to your clipboard.",
+      "Drag and drop a .json file onto the input area to load it directly.",
+    ],
+  },
+  "/base64-encoder": {
+    name: "Base64 Encoder & Decoder",
+    steps: [
+      "Type or paste the text you want to convert into the input field.",
+      "Click Encode to convert plain text to Base64, or Decode to convert Base64 back to text.",
+      "The converted result appears instantly in the output field.",
+      "Click Copy to copy the encoded or decoded value to your clipboard.",
+    ],
+  },
+  "/url-encoder": {
+    name: "URL Encoder & Decoder",
+    steps: [
+      "Paste the URL or text string you want to encode into the input field.",
+      "Click Encode to percent-encode special characters for safe use in URLs.",
+      "Click Decode to reverse percent-encoding back to readable text.",
+      "Copy the result and use it in query strings, href attributes, or API calls.",
+    ],
+  },
+  "/regex-tester": {
+    name: "Regex Tester",
+    steps: [
+      "Enter your regular expression in the Pattern field (without surrounding slashes).",
+      "Set flags as needed: g for global, i for case-insensitive, m for multiline matching.",
+      "Type or paste your test string in the input area below.",
+      "All matches are highlighted in real time as you type — no need to press any button.",
+    ],
+  },
+  "/jwt-decoder": {
+    name: "JWT Decoder",
+    steps: [
+      "Paste your JWT token into the input field.",
+      "The tool automatically splits it into Header, Payload, and Signature sections.",
+      "The Header shows the signing algorithm; the Payload shows all claims in plain JSON.",
+      "Check the exp field in the Payload to see if the token is still valid.",
+    ],
+  },
+  "/uuid-generator": {
+    name: "UUID Generator",
+    steps: [
+      "Click the Generate button to produce a cryptographically random UUID v4.",
+      "Click the copy icon next to any UUID to copy it to your clipboard instantly.",
+      "Increase the Count input to generate multiple UUIDs in one batch.",
+      "Enable the Uppercase toggle to get UUIDs in uppercase format.",
+    ],
+  },
+  "/password-generator": {
+    name: "Password Generator",
+    steps: [
+      "Set the desired password length using the slider (8–128 characters).",
+      "Toggle which character sets to include: uppercase, lowercase, numbers, and symbols.",
+      "Click Generate to produce a new cryptographically random password.",
+      "Click Copy to securely copy the password to your clipboard.",
+    ],
+  },
+  "/hash-generator": {
+    name: "Hash Generator",
+    steps: [
+      "Paste the text you want to hash into the input field.",
+      "Select the hashing algorithm: MD5, SHA-1, SHA-256, or SHA-512.",
+      "The hash output updates instantly as you type — no button press needed.",
+      "Click Copy next to any algorithm's output to grab its hex digest.",
+    ],
+  },
+  "/color-converter": {
+    name: "Color Converter",
+    steps: [
+      "Enter a color value in any supported format: HEX (#ff5733), RGB, HSL, or a CSS color name.",
+      "The tool automatically converts it to all other formats simultaneously.",
+      "A color swatch shows a live preview of the selected color.",
+      "Click any converted value to copy it to your clipboard in one click.",
+    ],
+  },
+  "/unit-converter": {
+    name: "Unit Converter",
+    steps: [
+      "Select a measurement category from the dropdown (length, weight, temperature, volume, etc.).",
+      "Enter the value you want to convert in the From field and choose its unit.",
+      "Pick the target unit in the To field to see the converted result instantly.",
+      "The conversion updates in real time as you type — no button required.",
+    ],
+  },
+  "/text-case": {
+    name: "Text Case Converter",
+    steps: [
+      "Paste or type your text into the input area.",
+      "Click any case button: UPPER CASE, lower case, Title Case, camelCase, snake_case, or kebab-case.",
+      "The converted text appears instantly in the output field.",
+      "Click Copy to copy the result to your clipboard.",
+    ],
+  },
+  "/csv-to-json": {
+    name: "CSV to JSON Converter",
+    steps: [
+      "Paste your CSV data into the input area, or drag and drop a .csv file.",
+      "The tool infers column names from the first header row automatically.",
+      "The converted JSON appears on the right in real time.",
+      "Switch to JSON to CSV mode to reverse the conversion.",
+      "Use the Download button to save the result as a file.",
+    ],
+  },
+  "/markdown-preview": {
+    name: "Markdown Live Preview",
+    steps: [
+      "Type or paste your Markdown text into the left editor panel.",
+      "The rendered HTML preview updates in real time in the right panel.",
+      "Switch to HTML Source mode to inspect the generated HTML markup.",
+      "Use the Copy button to copy the Markdown or the rendered HTML output.",
+    ],
+  },
+  "/image-resizer": {
+    name: "Image Resizer & Compressor",
+    steps: [
+      "Drag and drop an image onto the upload area, or click to browse your files.",
+      "Enter the target width and height in pixels.",
+      "Click the lock icon to keep the original aspect ratio as you resize.",
+      "Choose the output format (JPEG, PNG, or WebP) and adjust the quality slider.",
+      "Click Resize Image and then download the result with the Download button.",
+    ],
+  },
+  "/http-tester": {
+    name: "HTTP Request Tester",
+    steps: [
+      "Enter the full URL of the endpoint you want to test (e.g. https://api.example.com/users).",
+      "Select the HTTP method: GET, POST, PUT, DELETE, or PATCH.",
+      "Add any required request headers as key-value pairs using the Add Header button.",
+      "For POST, PUT, or PATCH requests, enter the request body as JSON or form data.",
+      "Click Send and inspect the response status code, headers, and body.",
+    ],
+  },
+  "/timestamp-converter": {
+    name: "Unix Timestamp Converter",
+    steps: [
+      "Paste a Unix timestamp (in seconds or milliseconds) into the input field.",
+      "The tool instantly shows the equivalent date and time in UTC and your local timezone.",
+      "Or switch to Date → Timestamp mode to convert a human-readable date to a Unix timestamp.",
+      "Click any output value to copy it to your clipboard.",
+    ],
+  },
+  "/word-counter": {
+    name: "Word Counter",
+    steps: [
+      "Paste or type your text into the large input area.",
+      "Word count, character count, sentence count, and paragraph count update instantly.",
+      "Reading time and average speaking time estimates are shown automatically.",
+      "Scroll down to see keyword frequency and the top most-used words in your text.",
+    ],
+  },
+  "/qr-generator": {
+    name: "QR Code Generator",
+    steps: [
+      "Type or paste the text or URL you want to encode into the input field.",
+      "The QR code preview updates in real time as you type.",
+      "Adjust the output size and error correction level using the options.",
+      "Click Download PNG to save the QR code as a high-quality image file.",
+    ],
+  },
+  "/ip-geolocation": {
+    name: "IP Geolocation Lookup",
+    steps: [
+      "Enter an IPv4 or IPv6 address in the input field, or leave it blank to look up your own IP.",
+      "Click Look Up to fetch geolocation data from the public API.",
+      "Results show country, region, city, ISP, and approximate coordinates.",
+      "Note: geolocation data is approximate and accurate to city level at best.",
+    ],
+  },
+  "/html-formatter": {
+    name: "HTML Formatter & Minifier",
+    steps: [
+      "Paste HTML markup into the input area.",
+      "The formatter indents nested elements and normalizes whitespace for readability.",
+      "Switch to Minify mode to strip all whitespace for production deployment.",
+      "Click Copy to copy the formatted or minified HTML to your clipboard.",
+    ],
+  },
+};
